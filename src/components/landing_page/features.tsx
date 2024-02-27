@@ -2,18 +2,22 @@ import {useEffect, useState} from "react";
 
 const features = [
     {
+        key: 0,
         title: "Feature 1",
         description: "Description of feature 1"
     },
     {
+        key: 1,
         title: "Feature 2",
         description: "Description of feature 2"
     },
     {
+        key: 2,
         title: "Feature 3",
         description: "Description of feature 3"
     },
     {
+        key: 3,
         title: "Feature 4",
         description: "Description of feature 4"
     }
@@ -34,7 +38,6 @@ const Features = ({isLockHovered}: FeaturesProps) => {
         }).join('');
     };
 
-
     useEffect(() => {
         // Wait for the lock to be hovered for 1 second before hiding the text
         if (isLockHovered) {
@@ -48,24 +51,23 @@ const Features = ({isLockHovered}: FeaturesProps) => {
                 setIsEnabledColorActive(true);
             }, 800);
 
-
             return () => {
                 clearInterval(intervalId);
                 clearTimeout(timeoutId);
             };
-        }
-        else {
+        } else {
             setTitleTexts(features.map(feature => feature.title));
             setDescriptionTexts(features.map(feature => feature.description));
             setIsEnabledColorActive(false);
-
         }
     }, [isLockHovered]);
 
     return (
-        <div className={`relative grid px-6 mr-24 py-12 mb-12 rounded-r-full content-center bg-opacity-5 bg-black w-full gap-2 lg:mb-0 lg:grid-cols-4 lg:text-left ${isLockHovered ? 'w-full' : 'w-0'}`}>
+        <div
+            className={`drop-shadow-2xl relative grid px-6 mr-24 py-12 mb-12 rounded-r-full content-center bg-gray-200 w-full gap-2 lg:mb-0 lg:grid-cols-4 lg:text-left`}>
 
-            <div className={`absolute -z-5 h-full rounded-r-full transition-width duration-700 ease-in-out ${isLockHovered ? 'w-full' : 'w-0'} ${isEnabledColorActive ? 'bg-green-500' : 'bg-white'}`}/>
+            <div
+                className={`absolute -z-5 h-full rounded-r-full transition-width duration-700 ease-in-out ${isLockHovered ? 'w-full' : 'w-0'} ${isEnabledColorActive ? 'bg-green-500' : 'bg-white'}`}/>
 
             {features.map((feature, index) => (
                 <div
