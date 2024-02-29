@@ -6,3 +6,9 @@ interface MainContentProps {
 interface FeaturesProps {
     isLockHovered: boolean;
 }
+
+interface Feature {
+    key: number;
+    title: string;
+    description: string;
+}
