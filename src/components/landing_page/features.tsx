@@ -14,12 +14,10 @@ const Features = ({isLockHovered}: FeaturesProps) => {
     const [descriptionTexts, setDescriptionTexts] = useState<string[]>(features.map(feature => feature.description));
 
     const scrambleText = (text: string) => {
-        return text.split('').map((char) => {
-            if (Math.random() > 0.5) {
-                return String.fromCharCode(33 + Math.floor(Math.random() * (126 - 33)));
-            }
-            return char;
-        }).join('');
+        return text
+            .split("")
+            .map(char => (Math.random() > 0.5 ? String.fromCharCode(33 + Math.floor(Math.random() * (126 - 33))) : char))
+            .join("");
     };
 
     useEffect(() => {
