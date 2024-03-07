@@ -1,12 +1,13 @@
 "use client";
 
 import {useState} from "react";
+import CredentialTable from "@/components/dashboard/CredentialTable";
 
 export default function Dashboard() {
 
-    const [selectedPassword, setSelectedPassword] = useState<boolean>(true)
+    const [selectedCredentials, setSelectedCredentials] = useState<boolean>(true)
 
-    const passwords = [
+    const credentials = [
         {
             "id": 1,
             "site": {
@@ -15,9 +16,11 @@ export default function Dashboard() {
                 "url": "https://www.google.com",
                 "icon": "google_icon.png"
             },
+            "nickname": "Test Nickname",
             "username": "testuser",
             "password": "testpassword",
             "category": "Social",
+            "favorite": false,
             "notes": "Test Notes"
         },
         {
@@ -28,9 +31,11 @@ export default function Dashboard() {
                 "url": "https://www.facebook.com",
                 "icon": "facebook_icon.png"
             },
+            "nickname": "Test Nickname",
             "username": "testuser",
             "password": "testpassword",
             "category": "Social",
+            "favorite": true,
             "notes": "Test Notes"
         },
         {
@@ -41,22 +46,25 @@ export default function Dashboard() {
                 "url": "https://www.twitter.com",
                 "icon": "twitter_icon.png"
             },
+            "nickname": "Test Nickname",
             "username": "testuser",
             "password": "testpassword",
             "category": "Social",
+            "favorite": false,
             "notes": "Test Notes"
         }
     ];
 
     const toggleDetailsPanel = () => {
-        setSelectedPassword(!selectedPassword);
+        setSelectedCredentials(!selectedCredentials);
     };
 
     return (
         <main className="flex flex-row h-screen justify-between p-2 bg-gray-200">
             <div
-                className={`transition-width duration-500 ease-in-out ${selectedPassword ? 'w-2/3' : 'w-full'} h-full bg-emerald-400 rounded-2xl p-6`}>
+                className={`transition-width duration-500 ease-in-out ${selectedCredentials ? 'w-2/3' : 'w-full'} h-full bg-gray-300 rounded-2xl`}>
                 {/* Passwords Table and Filters */}
+                <CredentialTable data={credentials}/>
                 <button
                     className="p-2 rounded-2xl bg-blue-500"
                     onClick={toggleDetailsPanel}>
@@ -64,11 +72,9 @@ export default function Dashboard() {
                 </button>
             </div>
             <div
-                className={`transition-all duration-200 ease-in-out ${selectedPassword ? 'flex-grow p-6' : 'w-0'} h-full bg-opacity-0 bg-emerald-200`}>
+                className={`transition-all duration-200 ease-in-out ${selectedCredentials ? 'flex-grow p-6' : 'w-0'} h-full bg-opacity-0 bg-emerald-200`}>
                 {/* Details for a selected credential */}
             </div>
-
-
         </main>
     );
 }
