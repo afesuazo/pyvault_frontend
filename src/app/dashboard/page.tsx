@@ -2,6 +2,7 @@
 
 import {useState} from "react";
 import CredentialTable from "@/components/dashboard/CredentialTable";
+import CredentialDetails from "@/components/dashboard/CredentialDetails";
 
 export default function Dashboard() {
 
@@ -69,9 +70,9 @@ export default function Dashboard() {
     }
 
     return (
-        <main className="flex flex-row h-screen justify-between bg-gray-200">
+        <main className="flex h-screen justify-between bg-gray-300">
             <div
-                className={`transition-width duration-500 ease-in-out ${selectedCredential ? 'w-2/3' : 'w-full'} h-full bg-gray-300 rounded-2xl`}>
+                className={`transition-width duration-300 ease-in-out ${selectedCredential ? 'w-2/3' : 'w-full'} h-full bg-gray-300 rounded-2xl`}>
                 {/* Passwords Table and Filters */}
                 <CredentialTable
                     data={credentials}
@@ -80,8 +81,9 @@ export default function Dashboard() {
                 />
             </div>
             <div
-                className={`transition-all duration-200 ease-in-out ${selectedCredential ? 'flex-grow p-6' : 'w-0'} h-full bg-opacity-0 bg-emerald-200`}>
+                className={`relative right-0 bg-gray-400 transition-all duration-300 ease-in-out ${selectedCredential ? "w-1/3 m-4 ml-0 p-2 pl-4" : "w-0" }  rounded-2xl`}>
                 {/* Details for a selected credential */}
+                <CredentialDetails credential={selectedCredential} />
             </div>
         </main>
     );

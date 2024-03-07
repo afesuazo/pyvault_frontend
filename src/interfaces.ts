@@ -43,3 +43,7 @@ interface CredentialTableItemProps {
     isSelected: boolean;
     onSelect: (selectedCredential: CredentialEntry) => void;
 }
+
+interface CredentialDetailsProps {
+    credential: CredentialEntry | null;
+}
