@@ -1,7 +1,10 @@
-const CredentialTableItem = ( {credential} : CredentialTableItemProps ) => {
+const CredentialTableItem = ( {credential, onSelect} : CredentialTableItemProps ) => {
     return (
         <div
-            className="grid grid-cols-3 items-center px-2 py-0.5 hover:bg-gray-100 border-b cursor-pointer transition duration-300 ease-in-out">
+            className="grid grid-cols-3 items-center px-2 py-0.5 hover:bg-gray-100 border-b cursor-pointer transition duration-300 ease-in-out"
+            onClick={() => onSelect(credential)}
+        >
+
             {/* Icon for the site or site Initials */}
             {/* Site Name */}
 
