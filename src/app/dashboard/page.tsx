@@ -62,14 +62,14 @@ export default function Dashboard() {
     return (
         <main className="flex flex-row h-screen justify-between p-2 bg-gray-200">
             <div
-                className={`transition-width duration-500 ease-in-out ${selectedCredentials ? 'w-2/3' : 'w-full'} h-full bg-emerald-400 rounded-2xl`}>
+                className={`transition-width duration-500 ease-in-out ${selectedCredentials ? 'w-2/3' : 'w-full'} h-full bg-gray-300 rounded-2xl`}>
                 {/* Passwords Table and Filters */}
+                <CredentialTable data={credentials}/>
                 <button
                     className="p-2 rounded-2xl bg-blue-500"
                     onClick={toggleDetailsPanel}>
                     Toggle
                 </button>
-                <CredentialTable data={credentials}/>
             </div>
             <div
                 className={`transition-all duration-200 ease-in-out ${selectedCredentials ? 'flex-grow p-6' : 'w-0'} h-full bg-opacity-0 bg-emerald-200`}>
