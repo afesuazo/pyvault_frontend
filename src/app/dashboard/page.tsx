@@ -16,6 +16,7 @@ export default function Dashboard() {
                 "url": "https://www.google.com",
                 "icon": "google_icon.png"
             },
+            "nickname": "Test Nickname",
             "username": "testuser",
             "password": "testpassword",
             "category": "Social",
@@ -30,6 +31,7 @@ export default function Dashboard() {
                 "url": "https://www.facebook.com",
                 "icon": "facebook_icon.png"
             },
+            "nickname": "Test Nickname",
             "username": "testuser",
             "password": "testpassword",
             "category": "Social",
@@ -44,6 +46,7 @@ export default function Dashboard() {
                 "url": "https://www.twitter.com",
                 "icon": "twitter_icon.png"
             },
+            "nickname": "Test Nickname",
             "username": "testuser",
             "password": "testpassword",
             "category": "Social",
@@ -59,7 +62,7 @@ export default function Dashboard() {
     return (
         <main className="flex flex-row h-screen justify-between p-2 bg-gray-200">
             <div
-                className={`transition-width duration-500 ease-in-out ${selectedCredentials ? 'w-2/3' : 'w-full'} h-full bg-emerald-400 rounded-2xl p-6`}>
+                className={`transition-width duration-500 ease-in-out ${selectedCredentials ? 'w-2/3' : 'w-full'} h-full bg-emerald-400 rounded-2xl`}>
                 {/* Passwords Table and Filters */}
                 <button
                     className="p-2 rounded-2xl bg-blue-500"
