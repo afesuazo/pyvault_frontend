@@ -53,7 +53,7 @@ export default function Dashboard() {
     };
 
     return (
-        <main className="flex flex-row h-screen justify-between p-2 ">
+        <main className="flex flex-row h-screen justify-between p-2 bg-gray-200">
             <div
                 className={`transition-width duration-500 ease-in-out ${selectedPassword ? 'w-2/3' : 'w-full'} h-full bg-emerald-400 rounded-2xl p-6`}>
                 {/* Passwords Table and Filters */}
@@ -64,7 +64,7 @@ export default function Dashboard() {
                 </button>
             </div>
             <div
-                className={`transition-all duration-200 ease-in-out ${selectedPassword ? 'flex-grow p-6' : 'w-0'} h-full border-l rounded-2xl bg-emerald-200`}>
+                className={`transition-all duration-200 ease-in-out ${selectedPassword ? 'flex-grow p-6' : 'w-0'} h-full bg-opacity-0 bg-emerald-200`}>
                 {/* Details for a selected credential */}
             </div>
 
