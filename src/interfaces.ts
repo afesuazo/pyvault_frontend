@@ -38,6 +38,10 @@ interface CredentialTableProps {
     onCredentialSelect: (credential: CredentialEntry) => void;
 }
 
+interface CredentialTableHeaderProps {
+    onSearch:(searchTerm: string) => void;
+}
+
 interface CredentialTableItemProps {
     credential: CredentialEntry;
     isSelected: boolean;

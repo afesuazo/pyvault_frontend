@@ -3,10 +3,12 @@
 import {useState} from "react";
 import CredentialTable from "@/components/dashboard/CredentialTable";
 import CredentialDetails from "@/components/dashboard/CredentialDetails";
+import CredentialTableHeader from "@/components/dashboard/CredentialTableHeader";
 
 export default function Dashboard() {
 
     const [selectedCredential, setSelectedCredential] = useState<CredentialEntry | null>(null)
+    const [nicknameSearchInput, setNicknameSearchInput] = useState('');
 
     const credentials = [
         {
@@ -69,13 +71,21 @@ export default function Dashboard() {
         setSelectedCredential(credential);
     }
 
+    // Filtered credentials based on all filters
+    const filteredCredentials = credentials.filter(credential =>
+            credential.nickname.toLowerCase().includes(nicknameSearchInput.toLowerCase())
+    );
+
     return (
         <main className="flex h-screen justify-between bg-gray-300">
             <div
                 className={`transition-width duration-300 ease-in-out ${selectedCredential ? 'w-2/3' : 'w-full'} h-full bg-gray-300 rounded-2xl`}>
                 {/* Passwords Table and Filters */}
+                <CredentialTableHeader
+                    onSearch={(searchTerm) => setNicknameSearchInput(searchTerm)}
+                />
                 <CredentialTable
-                    data={credentials}
+                    data={filteredCredentials}
                     selectedCredential={selectedCredential}
                     onCredentialSelect={onSelectedCredential}
                 />

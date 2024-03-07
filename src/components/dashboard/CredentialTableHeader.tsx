@@ -1,4 +1,4 @@
-const CredentialTableHeader = () => {
+const CredentialTableHeader = ({onSearch} :CredentialTableHeaderProps) => {
     return (
         <div className="bg-gray-300 flex flex-col p-2 pb-3 rounded-t-lg border-b-2">
             {/*  Table Name  */}
@@ -13,7 +13,7 @@ const CredentialTableHeader = () => {
                     <input
                         type="text"
                         placeholder="Credential nickname"
-                        onChange={(e) => console.log(e.target.value)}
+                        onChange={(e) => onSearch(e.target.value)}
                         className="p-1 border rounded-lg"
                     />
 
