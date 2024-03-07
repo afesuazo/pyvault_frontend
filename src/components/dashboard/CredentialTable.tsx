@@ -2,7 +2,7 @@ import CredentialTableItem from "@/components/dashboard/CredentialTableItem";
 import CredentialTableHeader from "@/components/dashboard/CredentialTableHeader";
 
 
-const CredentialTable = ({ data, onCredentialSelect } : CredentialTableProps) => {
+const CredentialTable = ({ data, selectedCredential, onCredentialSelect } : CredentialTableProps) => {
     return (
         <div className="overflow-x-auto">
             <CredentialTableHeader />
@@ -10,6 +10,7 @@ const CredentialTable = ({ data, onCredentialSelect } : CredentialTableProps) =>
                 <CredentialTableItem
                     key={credential.id}
                     credential={credential}
+                    isSelected={credential.id === selectedCredential?.id}
                     onSelect={onCredentialSelect}
                 />
             ))}

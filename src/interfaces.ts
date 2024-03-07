@@ -34,10 +34,12 @@ interface CredentialEntry {
 
 interface CredentialTableProps {
     data: CredentialEntry[];
+    selectedCredential: CredentialEntry | null;
     onCredentialSelect: (credential: CredentialEntry) => void;
 }
 
 interface CredentialTableItemProps {
     credential: CredentialEntry;
+    isSelected: boolean;
     onSelect: (selectedCredential: CredentialEntry) => void;
 }

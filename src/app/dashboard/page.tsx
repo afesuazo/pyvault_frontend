@@ -5,7 +5,7 @@ import CredentialTable from "@/components/dashboard/CredentialTable";
 
 export default function Dashboard() {
 
-    const [selectedCredential, setSelectedCredential] = useState<CredentialEntry | null>()
+    const [selectedCredential, setSelectedCredential] = useState<CredentialEntry | null>(null)
 
     const credentials = [
         {
@@ -75,6 +75,7 @@ export default function Dashboard() {
                 {/* Passwords Table and Filters */}
                 <CredentialTable
                     data={credentials}
+                    selectedCredential={selectedCredential}
                     onCredentialSelect={onSelectedCredential}
                 />
             </div>
