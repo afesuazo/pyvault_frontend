@@ -14,7 +14,7 @@ interface Feature {
 }
 
 
-interface SiteInfo {
+interface Site {
     id: number;
     name: string;
     url: string;
@@ -23,7 +23,7 @@ interface SiteInfo {
 
 interface CredentialEntry {
     id: number;
-    site: SiteInfo;
+    site: Site;
     nickname: string;
     username: string;
     password: string;
@@ -34,8 +34,12 @@ interface CredentialEntry {
 
 interface CredentialTableProps {
     data: CredentialEntry[];
+    selectedCredential: CredentialEntry | null;
+    onCredentialSelect: (credential: CredentialEntry) => void;
 }
 
 interface CredentialTableItemProps {
     credential: CredentialEntry;
+    isSelected: boolean;
+    onSelect: (selectedCredential: CredentialEntry) => void;
 }
