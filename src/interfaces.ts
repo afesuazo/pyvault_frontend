@@ -26,6 +26,9 @@ interface CredentialEntry {
     site: Site;
     nickname: string;
     username: string;
+    email: string;
+    created_at: string;
+    modified_at: string;
     password: string;
     category: string;
     favorite: boolean;
@@ -38,8 +41,16 @@ interface CredentialTableProps {
     onCredentialSelect: (credential: CredentialEntry) => void;
 }
 
+interface CredentialTableHeaderProps {
+    onSearch:(searchTerm: string) => void;
+}
+
 interface CredentialTableItemProps {
     credential: CredentialEntry;
     isSelected: boolean;
     onSelect: (selectedCredential: CredentialEntry) => void;
+}
+
+interface CredentialDetailsProps {
+    credential: CredentialEntry | null;
 }

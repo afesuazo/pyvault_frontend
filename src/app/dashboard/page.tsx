@@ -2,10 +2,13 @@
 
 import {useState} from "react";
 import CredentialTable from "@/components/dashboard/CredentialTable";
+import CredentialDetails from "@/components/dashboard/CredentialDetails";
+import CredentialTableHeader from "@/components/dashboard/CredentialTableHeader";
 
 export default function Dashboard() {
 
     const [selectedCredential, setSelectedCredential] = useState<CredentialEntry | null>(null)
+    const [nicknameSearchInput, setNicknameSearchInput] = useState('');
 
     const credentials = [
         {
@@ -18,9 +21,12 @@ export default function Dashboard() {
             },
             "nickname": "Test Nickname",
             "username": "testuser",
+            "email": "test@gmail.com",
             "password": "testpassword",
             "category": "Social",
             "favorite": false,
+            "modified_at": "2021-10-10T12:00:00Z",
+            "created_at": "2021-10-10T12:00:00Z",
             "notes": "Test Notes"
         },
         {
@@ -33,8 +39,11 @@ export default function Dashboard() {
             },
             "nickname": "Test Nickname",
             "username": "testuser",
+            "email": "test@gmail.com",
             "password": "testpassword",
             "category": "Social",
+            "modified_at": "2021-10-10T12:00:00Z",
+            "created_at": "2021-10-10T12:00:00Z",
             "favorite": true,
             "notes": "Test Notes"
         },
@@ -48,8 +57,11 @@ export default function Dashboard() {
             },
             "nickname": "Test Nickname",
             "username": "testuser",
+            "email": "test@gmail.com",
             "password": "testpassword",
             "category": "Social",
+            "modified_at": "2021-10-10T12:00:00Z",
+            "created_at": "2021-10-10T12:00:00Z",
             "favorite": false,
             "notes": "Test Notes"
         }
@@ -68,20 +80,29 @@ export default function Dashboard() {
         setSelectedCredential(credential);
     }
 
+    // Filtered credentials based on all filters
+    const filteredCredentials = credentials.filter(credential =>
+            credential.nickname.toLowerCase().includes(nicknameSearchInput.toLowerCase())
+    );
+
     return (
-        <main className="flex flex-row h-screen justify-between bg-gray-200">
+        <main className="flex h-screen justify-between bg-gray-300">
             <div
-                className={`transition-width duration-500 ease-in-out ${selectedCredential ? 'w-2/3' : 'w-full'} h-full bg-gray-300 rounded-2xl`}>
+                className={`transition-width duration-300 ease-in-out ${selectedCredential ? 'w-2/3' : 'w-full'} h-full bg-gray-300 rounded-2xl`}>
                 {/* Passwords Table and Filters */}
+                <CredentialTableHeader
+                    onSearch={(searchTerm) => setNicknameSearchInput(searchTerm)}
+                />
                 <CredentialTable
-                    data={credentials}
+                    data={filteredCredentials}
                     selectedCredential={selectedCredential}
                     onCredentialSelect={onSelectedCredential}
                 />
             </div>
             <div
-                className={`transition-all duration-200 ease-in-out ${selectedCredential ? 'flex-grow p-6' : 'w-0'} h-full bg-opacity-0 bg-emerald-200`}>
+                className={`relative right-0 bg-gray-400 transition-all duration-300 ease-in-out ${selectedCredential ? "w-1/3 m-4 ml-0 p-2 pl-4" : "w-0" }  rounded-2xl`}>
                 {/* Details for a selected credential */}
+                <CredentialDetails credential={selectedCredential} />
             </div>
         </main>
     );
