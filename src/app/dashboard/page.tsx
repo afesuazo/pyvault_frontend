@@ -100,7 +100,7 @@ export default function Dashboard() {
                 />
             </div>
             <div
-                className={`relative right-0 bg-gray-400 transition-all duration-300 ease-in-out ${selectedCredential ? "w-1/3 m-4 ml-0 p-2 pl-4" : "w-0" }  rounded-2xl`}>
+                className={`relative right-0 bg-gray-400 transition-all duration-200 ease-in-out ${selectedCredential ? "w-1/3 m-4 ml-0 p-2" : "w-0" }  rounded-2xl`}>
                 {/* Details for a selected credential */}
                 <CredentialDetails credential={selectedCredential} />
             </div>

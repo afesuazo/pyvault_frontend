@@ -8,28 +8,29 @@ const CredentialDetails = ( {credential} : CredentialDetailsProps ) => {
     }
 
     return (
-        <div className="flex flex-col justify-between h-full space-y-4 text-white overflow-hidden">
+        <div className="flex flex-col h-full space-y-4 text-white overflow-hidden">
 
             {/* User Actions */}
-            <div className="flex justify-between items-center border-b space-x-2 p-4">
-                <div className="text-2xl font-semibold text-white">
+            <div className="flex justify-between items-center border-b p-4">
+                <div className="text-2xl font-semibold">
                     <span> {credential.favorite ? "⭐️" : "--"} </span>
                     <span> {credential.nickname} </span>
                 </div>
-                <div className="space-x-2">
-                    <button className="text-sm bg-gray-300 hover:bg-gray-200 text-white px-3 py-1 rounded">Edit</button>
-                    <button className="text-sm bg-gray-300 hover:bg-gray-200 text-white px-3 py-1 rounded">Delete</button>
+                <div className="flex space-x-2">
+                    <button className="bg-gray-300 hover:bg-gray-200 text-white px-3 py-1 rounded">Edit</button>
+                    <button className="bg-gray-300 hover:bg-gray-200 text-white px-3 py-1 rounded">Delete</button>
                 </div>
             </div>
 
-            <div className="flex flex-col flex-grow p-2 space-y-6 pb-4">
+            {/* Credential Details */}
+            <div className="flex-grow p-2 pb-4 space-y-6">
 
                 {/* Site Details */}
-                <div className="flex space-x-4 rounded-xl p-2">
+                <div className="flex items-center space-x-4 p-2">
                     <img src={credential.site.icon} alt="Site Icon" className="w-16 h-16 rounded-full border"/>
-                    <div className="flex flex-col justify-center">
-                        <h2 className="text-xl font-bold text-white">{credential.site.name}</h2>
-                        <Link href={credential.site.url} target="_blank" className="text-white">{credential.site.url}</Link>
+                    <div>
+                        <h2 className="text-xl font-bold">{credential.site.name}</h2>
+                        <Link href={credential.site.url} target="_blank" className="text-white underline">{credential.site.url}</Link>
                     </div>
                 </div>
 
