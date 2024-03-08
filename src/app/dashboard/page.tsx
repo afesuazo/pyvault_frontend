@@ -21,9 +21,12 @@ export default function Dashboard() {
             },
             "nickname": "Test Nickname",
             "username": "testuser",
+            "email": "test@gmail.com",
             "password": "testpassword",
             "category": "Social",
             "favorite": false,
+            "modified_at": "2021-10-10T12:00:00Z",
+            "created_at": "2021-10-10T12:00:00Z",
             "notes": "Test Notes"
         },
         {
@@ -36,8 +39,11 @@ export default function Dashboard() {
             },
             "nickname": "Test Nickname",
             "username": "testuser",
+            "email": "test@gmail.com",
             "password": "testpassword",
             "category": "Social",
+            "modified_at": "2021-10-10T12:00:00Z",
+            "created_at": "2021-10-10T12:00:00Z",
             "favorite": true,
             "notes": "Test Notes"
         },
@@ -51,8 +57,11 @@ export default function Dashboard() {
             },
             "nickname": "Test Nickname",
             "username": "testuser",
+            "email": "test@gmail.com",
             "password": "testpassword",
             "category": "Social",
+            "modified_at": "2021-10-10T12:00:00Z",
+            "created_at": "2021-10-10T12:00:00Z",
             "favorite": false,
             "notes": "Test Notes"
         }

@@ -1,7 +1,7 @@
 const CredentialTableItem = ( {credential, isSelected, onSelect} : CredentialTableItemProps ) => {
     return (
         <div
-            className={`grid grid-cols-3 items-center mr-2 px-2 py-0.5 hover:bg-gray-400 border-b cursor-pointer transition duration-300 ease-in-out ${isSelected ? 'bg-gray-400 mr-0' : ''}`}
+            className={`grid grid-cols-3 items-center px-2 py-0.5 hover:bg-gray-400 border-b cursor-pointer transition-all duration-300 ease-in-out ${isSelected ? 'bg-gray-400 mr-0' : 'mr-2'}`}
             onClick={() => onSelect(credential)}
         >
 
