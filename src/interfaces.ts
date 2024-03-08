@@ -26,6 +26,9 @@ interface CredentialEntry {
     site: Site;
     nickname: string;
     username: string;
+    email: string;
+    created_at: string;
+    modified_at: string;
     password: string;
     category: string;
     favorite: boolean;

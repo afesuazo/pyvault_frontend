@@ -14,7 +14,7 @@ const CredentialTableHeader = ({onSearch} :CredentialTableHeaderProps) => {
                         type="text"
                         placeholder="Credential nickname"
                         onChange={(e) => onSearch(e.target.value)}
-                        className="p-1 border rounded-lg"
+                        className="p-1 border focus:outline-gray-300 rounded-lg"
                     />
 
                     {/*  Filtering  */}
@@ -22,7 +22,8 @@ const CredentialTableHeader = ({onSearch} :CredentialTableHeaderProps) => {
                         onClick={() => {
                             console.log("Add Filters")
                         }}
-                        className="p-1 px-2 bg-gray-400 text-white rounded-lg hover:bg-gray-500"
+                        className="p-1 px-2 bg-gray-400 text-white rounded-lg hover:bg-gray-500 disabled:opacity-25 disabled:hover:bg-gray-400"
+                        disabled
                     >
                         + Filter
                     </button>
