@@ -70,12 +70,6 @@ export default function Dashboard() {
     ];
 
     const [selectedCredential, setSelectedCredential] = useState<CredentialEntry | null>(null)
-    const [nicknameSearchInput, setNicknameSearchInput] = useState('');
-
-    // Filtered credentials based on all filters
-    const filteredCredentials = useMemo(() => credentials.filter(credential =>
-        credential.nickname.toLowerCase().includes(nicknameSearchInput.toLowerCase())
-    ), [credentials, nicknameSearchInput]);
 
     const onSelectedCredential = (credential: CredentialEntry) => {
         // If selected credential is the same as the one clicked, then deselect it
@@ -93,7 +87,7 @@ export default function Dashboard() {
             <div className={`transition-width duration-300 ease-in-out ${selectedCredential ? 'w-2/3' : 'w-full'}  h-full bg-gray-300 rounded-2xl`}>
                 <CredentialTable
                     dataColumns={columns}
-                    data={filteredCredentials}
+                    data={credentials}
                     selectedCredential={selectedCredential}
                     onCredentialSelect={onSelectedCredential}
                 />

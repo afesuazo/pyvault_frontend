@@ -1,4 +1,4 @@
-import {useCallback, useMemo, useState} from "react";
+import {ChangeEvent, useCallback, useMemo, useState} from "react";
 import {
     Table,
     TableHeader,
@@ -6,9 +6,10 @@ import {
     TableBody,
     TableRow,
     TableCell,
-    SortDescriptor, Button,
+    Input,
+    SortDescriptor, Button, Dropdown, DropdownTrigger, DropdownMenu,
 } from "@nextui-org/react";
-import {StarIcon} from "@heroicons/react/16/solid";
+import {StarIcon, PlusIcon} from "@heroicons/react/16/solid";
 
 const CredentialTable = ({ dataColumns, data, selectedCredential, onCredentialSelect } : CredentialTableProps) => {
 
@@ -18,6 +19,7 @@ const CredentialTable = ({ dataColumns, data, selectedCredential, onCredentialSe
         column: "site",
         direction: "ascending",
     });
+    const [nicknameSearchInput, setNicknameSearchInput] = useState('');
 
     const items = useMemo(() => {
         const start = (page - 1) * rowsPerPage;
@@ -26,8 +28,12 @@ const CredentialTable = ({ dataColumns, data, selectedCredential, onCredentialSe
         return data.slice(start, end);
     }, [page, data, rowsPerPage]);
 
+    const filteredItems = useMemo(() => items.filter(credential =>
+        credential.nickname.toLowerCase().includes(nicknameSearchInput.toLowerCase())
+    ), [items, nicknameSearchInput]);
+
     const sortedItems = useMemo(() => {
-        return [...items].sort((a: CredentialEntry, b: CredentialEntry) => {
+        return [...filteredItems].sort((a: CredentialEntry, b: CredentialEntry) => {
             // @ts-ignore
             let first = sortDescriptor.column === 'site' ? a.site.name.toLowerCase() : a[sortDescriptor.column];
             // @ts-ignore
@@ -36,11 +42,11 @@ const CredentialTable = ({ dataColumns, data, selectedCredential, onCredentialSe
             const cmp = first < second ? -1 : first > second ? 1 : 0;
             return sortDescriptor.direction === "descending" ? -cmp : cmp;
         });
-    }, [sortDescriptor, items]);
+    }, [sortDescriptor, filteredItems]);
 
     const classNames = {
             wrapper: ["h-full rounded-none bg-gray-300 overflow-x-hidden"],
-            th: ["bg-transparent", "text-default-500", "border-b", "border-divider"],
+            th: ["bg-transparent", "border-b", "border-divider", "last:text-end", "[&:nth-child(2)]:text-center"],
             tr: ["hover:bg-gray-400 border-b-1 cursor-pointer"],
             td: [
                 "first:rounded-l-xl",
@@ -95,6 +101,71 @@ const CredentialTable = ({ dataColumns, data, selectedCredential, onCredentialSe
         }
     }, []);
 
+    const onRowsPerPageChange = useCallback((e:ChangeEvent<HTMLSelectElement>) => {
+        setRowsPerPage(Number(e.target.value));
+        setPage(1);
+    }, []);
+
+    const onSearchChange = useCallback((value?: string) => {
+        if (value) {
+            setNicknameSearchInput(value);
+            setPage(1);
+        } else {
+            setNicknameSearchInput('');
+        }
+    }, []);
+
+    const onClear = useCallback(()=>{
+        setNicknameSearchInput("")
+        setPage(1)
+    },[])
+
+    const topContent = useMemo(() => {
+        return (
+            <div className="flex flex-col gap-4 p-4">
+                <div className="flex justify-between gap-3 items-end">
+                    <Input
+                        isClearable
+                        className="w-full sm:max-w-[44%]"
+                        placeholder="Search by nickname..."
+                        value={nicknameSearchInput}
+                        onClear={() => onClear()}
+                        onValueChange={onSearchChange}
+                    />
+                    <Button
+                        className={"bg-gray-400 px-6 text-center"}
+                        disableRipple={true}
+                        onClick={() => {
+                            console.log("Add New Credential")
+                        }}
+                        endContent={<PlusIcon className={"w-[24px] h-[24px] text-black"} />}>
+                        Add New
+                    </Button>
+                </div>
+                <div className="flex justify-between items-center">
+                    <span className="text-default-400 text-small">Total {filteredItems.length} users</span>
+                    <label className="flex items-center text-default-400 text-small">
+                        Rows per page:
+                        <select
+                            className="bg-transparent outline-none text-default-400 text-small"
+                            onChange={onRowsPerPageChange}
+                        >
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                        </select>
+                    </label>
+                </div>
+            </div>
+        );
+    }, [
+        nicknameSearchInput,
+        onSearchChange,
+        onRowsPerPageChange,
+        filteredItems.length,
+    ]);
+
+
     return (
         <div className="overflow-x-hidden">
             <Table
@@ -105,7 +176,7 @@ const CredentialTable = ({ dataColumns, data, selectedCredential, onCredentialSe
                 classNames={classNames}
                 selectionMode="none"
                 sortDescriptor={sortDescriptor}
-                // topContent={topContent}
+                topContent={topContent}
                 topContentPlacement="outside"
                 onSortChange={setSortDescriptor}
             >
