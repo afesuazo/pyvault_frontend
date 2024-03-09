@@ -6,12 +6,11 @@ import {
     TableBody,
     TableRow,
     TableCell,
-    Input,
     SortDescriptor, Button, Dropdown, DropdownTrigger, DropdownMenu, Pagination,
 } from "@nextui-org/react";
-import {StarIcon, PlusIcon} from "@heroicons/react/16/solid";
+import {StarIcon} from "@heroicons/react/16/solid";
 
-const CredentialTable = ({ dataColumns, data, selectedCredential, onCredentialSelect } : CredentialTableProps) => {
+const CredentialTable = ({ dataColumns, data, selectedCredential, onCredentialSelect, searchInput } : CredentialTableProps) => {
 
     const [rowsPerPage, setRowsPerPage] = useState(15);
     const [page, setPage] = useState(1);
@@ -19,7 +18,6 @@ const CredentialTable = ({ dataColumns, data, selectedCredential, onCredentialSe
         column: "site",
         direction: "ascending",
     });
-    const [nicknameSearchInput, setNicknameSearchInput] = useState('');
 
     const items = useMemo(() => {
         const start = (page - 1) * rowsPerPage;
@@ -29,8 +27,8 @@ const CredentialTable = ({ dataColumns, data, selectedCredential, onCredentialSe
     }, [page, data, rowsPerPage]);
 
     const filteredItems = useMemo(() => items.filter(credential =>
-        credential.nickname.toLowerCase().includes(nicknameSearchInput.toLowerCase())
-    ), [items, nicknameSearchInput]);
+        credential.nickname.toLowerCase().includes(searchInput.toLowerCase())
+    ), [items, searchInput]);
 
     const sortedItems = useMemo(() => {
         return [...filteredItems].sort((a: CredentialEntry, b: CredentialEntry) => {
@@ -43,23 +41,6 @@ const CredentialTable = ({ dataColumns, data, selectedCredential, onCredentialSe
             return sortDescriptor.direction === "descending" ? -cmp : cmp;
         });
     }, [sortDescriptor, filteredItems]);
-
-    const classNames = {
-            wrapper: ["h-full rounded-lg bg-gray-300 overflow-x-hidden shadow-none"],
-            th: ["bg-transparent", "border-b", "border-divider", "last:text-end", "[&:nth-child(2)]:text-center"],
-            tr: ["hover:bg-gray-400 border-b-1 cursor-pointer"],
-            td: [
-                "first:rounded-l-xl",
-                // first
-                "group-data-[first=true]:first:before:rounded-none",
-                "group-data-[first=true]:last:before:rounded-none",
-                // middle
-                "group-data-[middle=true]:before:rounded-none",
-                // last
-                "group-data-[last=true]:first:before:rounded-none",
-                "group-data-[last=true]:last:before:rounded-none",
-            ],
-    }
 
     const renderCell = useCallback((credential: CredentialEntry, columnKey: any) => {
         const cellValue = credential[columnKey as keyof CredentialEntry];
@@ -106,42 +87,9 @@ const CredentialTable = ({ dataColumns, data, selectedCredential, onCredentialSe
         setPage(1);
     }, []);
 
-    const onSearchChange = useCallback((value?: string) => {
-        if (value) {
-            setNicknameSearchInput(value);
-            setPage(1);
-        } else {
-            setNicknameSearchInput('');
-        }
-    }, []);
-
-    const onClear = useCallback(()=>{
-        setNicknameSearchInput("")
-        setPage(1)
-    },[])
-
     const topContent = useMemo(() => {
         return (
-            <div className="flex flex-col gap-4 p-2 px-4">
-                <div className="flex justify-between gap-3 items-end">
-                    <Input
-                        isClearable
-                        className="w-full sm:max-w-[44%]"
-                        placeholder="Search by nickname..."
-                        value={nicknameSearchInput}
-                        onClear={() => onClear()}
-                        onValueChange={onSearchChange}
-                    />
-                    <Button
-                        className={"bg-gray-400 px-6 text-center"}
-                        disableRipple={true}
-                        onClick={() => {
-                            console.log("Add New Credential")
-                        }}
-                        endContent={<PlusIcon className={"w-[24px] h-[24px] text-black"} />}>
-                        Add New
-                    </Button>
-                </div>
+            <div className="flex flex-col gap-4 pt-2 px-4">
                 <div className="flex justify-between items-center">
                     <span className="text-default-400 text-small">Total {filteredItems.length} users</span>
                     <label className="flex items-center text-default-400 text-small">
@@ -159,8 +107,7 @@ const CredentialTable = ({ dataColumns, data, selectedCredential, onCredentialSe
             </div>
         );
     }, [
-        nicknameSearchInput,
-        onSearchChange,
+        searchInput,
         onRowsPerPageChange,
         filteredItems.length,
     ]);
@@ -186,7 +133,7 @@ const CredentialTable = ({ dataColumns, data, selectedCredential, onCredentialSe
                     isCompact
                     showControls
                     showShadow
-                    color="primary"
+                    color="default"
                     page={page}
                     total={pages}
                     onChange={setPage}
@@ -202,6 +149,23 @@ const CredentialTable = ({ dataColumns, data, selectedCredential, onCredentialSe
             </div>
         );
     }, [items.length, page, pages]);
+
+    const classNames = {
+        wrapper: ["h-full rounded-lg bg-gray-300 overflow-x-hidden shadow-none pt-0"],
+        th: ["bg-transparent", "border-b", "border-divider", "last:text-end", "[&:nth-child(2)]:text-center"],
+        tr: ["hover:bg-gray-400 border-b-1 cursor-pointer"],
+        td: [
+            "first:rounded-l-xl",
+            // first
+            "group-data-[first=true]:first:before:rounded-none",
+            "group-data-[first=true]:last:before:rounded-none",
+            // middle
+            "group-data-[middle=true]:before:rounded-none",
+            // last
+            "group-data-[last=true]:first:before:rounded-none",
+            "group-data-[last=true]:last:before:rounded-none",
+        ],
+    }
 
     return (
         <div className="py-2 overflow-hidden h-full flex">
