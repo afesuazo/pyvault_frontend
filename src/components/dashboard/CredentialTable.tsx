@@ -7,7 +7,7 @@ import {
     TableRow,
     TableCell,
     Input,
-    SortDescriptor, Button, Dropdown, DropdownTrigger, DropdownMenu,
+    SortDescriptor, Button, Dropdown, DropdownTrigger, DropdownMenu, Pagination,
 } from "@nextui-org/react";
 import {StarIcon, PlusIcon} from "@heroicons/react/16/solid";
 
@@ -45,7 +45,7 @@ const CredentialTable = ({ dataColumns, data, selectedCredential, onCredentialSe
     }, [sortDescriptor, filteredItems]);
 
     const classNames = {
-            wrapper: ["h-full rounded-none bg-gray-300 overflow-x-hidden"],
+            wrapper: ["h-full rounded-lg bg-gray-300 overflow-x-hidden shadow-none"],
             th: ["bg-transparent", "border-b", "border-divider", "last:text-end", "[&:nth-child(2)]:text-center"],
             tr: ["hover:bg-gray-400 border-b-1 cursor-pointer"],
             td: [
@@ -122,7 +122,7 @@ const CredentialTable = ({ dataColumns, data, selectedCredential, onCredentialSe
 
     const topContent = useMemo(() => {
         return (
-            <div className="flex flex-col gap-4 p-4">
+            <div className="flex flex-col gap-4 p-2 px-4">
                 <div className="flex justify-between gap-3 items-end">
                     <Input
                         isClearable
@@ -165,13 +165,49 @@ const CredentialTable = ({ dataColumns, data, selectedCredential, onCredentialSe
         filteredItems.length,
     ]);
 
+    const pages = Math.ceil(filteredItems.length / rowsPerPage);
+
+    const onNextPage = useCallback(() => {
+        if (page < pages) {
+            setPage(page + 1);
+        }
+    }, [page, pages]);
+
+    const onPreviousPage = useCallback(() => {
+        if (page > 1) {
+            setPage(page - 1);
+        }
+    }, [page]);
+
+    const bottomContent = useMemo(() => {
+        return (
+            <div className="py-2 px-4 flex justify-between items-center">
+                <Pagination
+                    isCompact
+                    showControls
+                    showShadow
+                    color="primary"
+                    page={page}
+                    total={pages}
+                    onChange={setPage}
+                />
+                <div className="hidden sm:flex w-[30%] justify-end gap-2">
+                    <Button isDisabled={pages === 1} size="sm" variant="flat" onPress={onPreviousPage}>
+                        Previous
+                    </Button>
+                    <Button isDisabled={pages === 1} size="sm" variant="flat" onPress={onNextPage}>
+                        Next
+                    </Button>
+                </div>
+            </div>
+        );
+    }, [items.length, page, pages]);
 
     return (
-        <div className="overflow-x-hidden">
+        <div className="py-2 overflow-hidden h-full flex">
             <Table
-                aria-label="Example table with custom cells, pagination and sorting"
                 isHeaderSticky
-                // bottomContent={bottomContent}
+                bottomContent={bottomContent}
                 bottomContentPlacement="outside"
                 classNames={classNames}
                 selectionMode="none"
