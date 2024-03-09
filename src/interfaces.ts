@@ -46,6 +46,7 @@ interface CredentialTableProps {
     data: CredentialEntry[];
     selectedCredential: CredentialEntry | null;
     onCredentialSelect: (credential: CredentialEntry) => void;
+    searchInput: string;
 }
 
 interface CredentialTableHeaderProps {
@@ -60,4 +61,10 @@ interface CredentialTableItemProps {
 
 interface CredentialDetailsProps {
     credential: CredentialEntry | null;
+}
+
+interface NavbarProps {
+    currentSearchValue: string;
+    onSearchChange:(searchTerm: string) => void;
+    onClear: () => void;
 }

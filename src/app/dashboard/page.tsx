@@ -1,8 +1,9 @@
 "use client";
 
-import {useMemo, useState} from "react";
+import {useCallback, useMemo, useState} from "react";
 import CredentialTable from "@/components/dashboard/CredentialTable";
 import CredentialDetails from "@/components/dashboard/CredentialDetails";
+import TopNavbar from "@/components/navigation/navbar";
 
 const columns = [
     {label: "SITE", key: "site", sortable: true},
@@ -70,6 +71,7 @@ export default function Dashboard() {
     ];
 
     const [selectedCredential, setSelectedCredential] = useState<CredentialEntry | null>(null)
+    const [searchInput, setSearchInput] = useState("");
 
     const onSelectedCredential = (credential: CredentialEntry) => {
         // If selected credential is the same as the one clicked, then deselect it
@@ -82,19 +84,41 @@ export default function Dashboard() {
         setSelectedCredential(credential);
     };
 
+    const onSearchChange = useCallback((value?: string) => {
+        if (value) {
+            setSearchInput(value);
+        } else {
+            setSearchInput('');
+        }
+    }, []);
+
+    const onClear = useCallback(()=>{
+        setSearchInput("")
+    },[])
+
     return (
-        <main className="flex h-screen justify-between bg-gray-300">
-            <div className={`transition-width duration-300 ease-in-out ${selectedCredential ? 'w-2/3' : 'w-full'}  h-full bg-gray-300 rounded-2xl`}>
-                <CredentialTable
-                    dataColumns={columns}
-                    data={credentials}
-                    selectedCredential={selectedCredential}
-                    onCredentialSelect={onSelectedCredential}
-                />
-            </div>
-            <div className={`relative right-0 bg-gray-400 transition-all duration-200 ease-in-out ${selectedCredential ? "w-1/3 m-4 ml-0 p-2" : "w-0" }  rounded-2xl`}>
-                {/* Details for a selected credential */}
-                <CredentialDetails credential={selectedCredential} />
+        <main className="flex flex-col h-full justify-between bg-gray-300">
+            <TopNavbar
+                currentSearchValue={searchInput}
+                onSearchChange={onSearchChange}
+                onClear={onClear}
+            />
+            <div className="flex h-full justify-between bg-gray-300">
+                <div
+                    className={`transition-width duration-300 ease-in-out ${selectedCredential ? 'w-2/3' : 'w-full'}  h-full bg-gray-300 rounded-2xl`}>
+                    <CredentialTable
+                        dataColumns={columns}
+                        data={credentials}
+                        selectedCredential={selectedCredential}
+                        onCredentialSelect={onSelectedCredential}
+                        searchInput={searchInput}
+                    />
+                </div>
+                <div
+                    className={`relative right-0 bg-gray-400 transition-all duration-200 ease-in-out ${selectedCredential ? "w-1/3 m-4 ml-0 p-2" : "w-0"}  rounded-2xl`}>
+                    {/* Details for a selected credential */}
+                    <CredentialDetails credential={selectedCredential}/>
+                </div>
             </div>
         </main>
     );
