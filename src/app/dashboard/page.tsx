@@ -1,14 +1,16 @@
 "use client";
 
-import {useState} from "react";
+import {useMemo, useState} from "react";
 import CredentialTable from "@/components/dashboard/CredentialTable";
 import CredentialDetails from "@/components/dashboard/CredentialDetails";
-import CredentialTableHeader from "@/components/dashboard/CredentialTableHeader";
+
+const columns = [
+    {label: "SITE", key: "site", sortable: true},
+    {label: "NICKNAME", key: "nickname", sortable: true},
+    {label: "FAVORITE", key: "favorite", sortable: true},
+];
 
 export default function Dashboard() {
-
-    const [selectedCredential, setSelectedCredential] = useState<CredentialEntry | null>(null)
-    const [nicknameSearchInput, setNicknameSearchInput] = useState('');
 
     const credentials = [
         {
@@ -19,7 +21,7 @@ export default function Dashboard() {
                 "url": "https://www.google.com",
                 "icon": "google_icon.png"
             },
-            "nickname": "Test Nickname",
+            "nickname": "Nickname1",
             "username": "testuser",
             "email": "test@gmail.com",
             "password": "testpassword",
@@ -67,40 +69,36 @@ export default function Dashboard() {
         }
     ];
 
-    const onSelectedCredential = (credential: CredentialEntry) => {
-        console.log(credential);
+    const [selectedCredential, setSelectedCredential] = useState<CredentialEntry | null>(null)
+    const [nicknameSearchInput, setNicknameSearchInput] = useState('');
 
+    // Filtered credentials based on all filters
+    const filteredCredentials = useMemo(() => credentials.filter(credential =>
+        credential.nickname.toLowerCase().includes(nicknameSearchInput.toLowerCase())
+    ), [credentials, nicknameSearchInput]);
+
+    const onSelectedCredential = (credential: CredentialEntry) => {
         // If selected credential is the same as the one clicked, then deselect it
         if (selectedCredential && credential.id === selectedCredential.id) {
+            console.log("Deselecting credential")
             setSelectedCredential(null);
             return;
         }
-
         // Else set the new selected credential
         setSelectedCredential(credential);
-    }
-
-    // Filtered credentials based on all filters
-    const filteredCredentials = credentials.filter(credential =>
-            credential.nickname.toLowerCase().includes(nicknameSearchInput.toLowerCase())
-    );
+    };
 
     return (
         <main className="flex h-screen justify-between bg-gray-300">
-            <div
-                className={`transition-width duration-300 ease-in-out ${selectedCredential ? 'w-2/3' : 'w-full'} h-full bg-gray-300 rounded-2xl`}>
-                {/* Passwords Table and Filters */}
-                <CredentialTableHeader
-                    onSearch={(searchTerm) => setNicknameSearchInput(searchTerm)}
-                />
+            <div className={`transition-width duration-300 ease-in-out ${selectedCredential ? 'w-2/3' : 'w-full'}  h-full bg-gray-300 rounded-2xl`}>
                 <CredentialTable
+                    dataColumns={columns}
                     data={filteredCredentials}
                     selectedCredential={selectedCredential}
                     onCredentialSelect={onSelectedCredential}
                 />
             </div>
-            <div
-                className={`relative right-0 bg-gray-400 transition-all duration-200 ease-in-out ${selectedCredential ? "w-1/3 m-4 ml-0 p-2" : "w-0" }  rounded-2xl`}>
+            <div className={`relative right-0 bg-gray-400 transition-all duration-200 ease-in-out ${selectedCredential ? "w-1/3 m-4 ml-0 p-2" : "w-0" }  rounded-2xl`}>
                 {/* Details for a selected credential */}
                 <CredentialDetails credential={selectedCredential} />
             </div>

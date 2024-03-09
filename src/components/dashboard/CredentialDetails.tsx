@@ -8,7 +8,7 @@ const CredentialDetails = ( {credential} : CredentialDetailsProps ) => {
     }
 
     return (
-        <div className="flex flex-col h-full space-y-4 text-white overflow-hidden">
+        <div className="flex flex-col h-full space-y-4 text-white overflow-hidden whitespace-nowrap ">
 
             {/* User Actions */}
             <div className="flex justify-between items-center border-b p-4">

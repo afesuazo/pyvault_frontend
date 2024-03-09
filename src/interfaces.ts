@@ -21,6 +21,12 @@ interface Site {
     icon: string;
 }
 
+interface CredentialColumn {
+    key: string;
+    label: string;
+    sortable: boolean;
+}
+
 interface CredentialEntry {
     id: number;
     site: Site;
@@ -36,6 +42,7 @@ interface CredentialEntry {
 }
 
 interface CredentialTableProps {
+    dataColumns: CredentialColumn[];
     data: CredentialEntry[];
     selectedCredential: CredentialEntry | null;
     onCredentialSelect: (credential: CredentialEntry) => void;
