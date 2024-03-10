@@ -68,3 +68,8 @@ interface NavbarProps {
     onSearchChange:(searchTerm: string) => void;
     onClear: () => void;
 }
+
+interface AuthModalProps {
+    isOpen: boolean;
+    onClose: () => void;
+}

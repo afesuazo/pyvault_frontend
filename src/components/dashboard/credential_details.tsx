@@ -1,6 +1,7 @@
 import Link from "next/link";
+import {StarIcon} from "@heroicons/react/16/solid";
 
-const CredentialDetails = ( {credential} : CredentialDetailsProps ) => {
+const CredentialDetails = ({credential} : CredentialDetailsProps ) => {
 
     // Nothing to render when no credential is selected
     if (!credential) {
@@ -12,8 +13,10 @@ const CredentialDetails = ( {credential} : CredentialDetailsProps ) => {
 
             {/* User Actions */}
             <div className="flex justify-between items-center border-b p-4">
-                <div className="text-2xl font-semibold">
-                    <span> {credential.favorite ? "⭐️" : "--"} </span>
+                <div className="text-2xl font-semibold flex align-middle space-x-2">
+                    <span>
+                        <StarIcon className={`h-8 w-8 hover:text-opacity-100 ${credential.favorite ? "hover:text-opacity-60 text-amber-400" : "text-opacity-60 text-gray-300"}`}/>
+                    </span>
                     <span> {credential.nickname} </span>
                 </div>
                 <div className="flex space-x-2">

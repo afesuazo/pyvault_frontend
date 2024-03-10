@@ -1,3 +1,5 @@
+"use client";
+
 import {
     Navbar,
     NavbarBrand,
@@ -9,11 +11,19 @@ import {
     Dropdown,
     DropdownMenu,
     Avatar,
-    Input, Button
+    Input, Button, Skeleton
 } from "@nextui-org/react";
 import {PlusIcon, LockClosedIcon} from "@heroicons/react/16/solid";
+import {useSession} from "next-auth/react";
+import {AuthModal} from "@/components/auth/auth_modal";
 
 export default function TopNavbar( {currentSearchValue, onSearchChange, onClear} : NavbarProps) {
+
+    const {data: session} = useSession();
+
+    if (!session || !session.user) {
+        return;
+    }
 
     return (
         <Navbar isBordered maxWidth="full" className="px-2">
@@ -51,12 +61,14 @@ export default function TopNavbar( {currentSearchValue, onSearchChange, onClear}
                             isBordered
                             as="button"
                             className="transition-transform"
-                            name="TestUser"
+                            name={session?.user?.name ? session.user.name : "0"}
                             size="md"
                             src=""
                         />
                     </DropdownTrigger>
-                    <DropdownMenu aria-label="Profile Actions" variant="flat">
+                    <DropdownMenu
+                        aria-label="Profile Actions"
+                        variant="flat">
                         <DropdownItem
                             key="logout"
                             startContent={<LockClosedIcon className={"w-4 h-4"} />}
