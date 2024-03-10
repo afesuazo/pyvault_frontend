@@ -15,7 +15,6 @@ import {
 } from "@nextui-org/react";
 import {PlusIcon, LockClosedIcon} from "@heroicons/react/16/solid";
 import {useSession} from "next-auth/react";
-import {AuthModal} from "@/components/auth/auth_modal";
 
 export default function TopNavbar( {currentSearchValue, onSearchChange, onClear} : NavbarProps) {
 

@@ -9,11 +9,11 @@ import {useState} from "react";
 
 export const AuthModal = ({isOpen, onClose} : AuthModalProps) => {
 
-    if (!isOpen) return null;
-
     const [enteredUsername, setEnteredUsername] = useState('')
     const [enteredPassword, setEnteredPassword] = useState('')
     const [errorMessage, setErrorMessage] = useState('')
+
+    if (!isOpen) return null;
 
     const loginHandler = async () => {
         const result = await signIn('login', {
