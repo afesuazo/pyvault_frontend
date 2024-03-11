@@ -73,3 +73,10 @@ interface AuthModalProps {
     isOpen: boolean;
     onClose: () => void;
 }
+
+interface HttpRequestConfig {
+    method?: string;
+    url: string;
+    headers?: any;
+    body?: string;
+}
