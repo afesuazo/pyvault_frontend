@@ -26,7 +26,7 @@ const CredentialDetails = ({credential} : CredentialDetailsProps ) => {
             </div>
 
             {/* Credential Details */}
-            <div className="flex-grow p-2 pb-4 space-y-6">
+            <div className="flex flex-col grow p-2 pb-4 space-y-6">
 
                 {/* Site Details */}
                 <div className="flex items-center space-x-4 p-2">
@@ -38,7 +38,7 @@ const CredentialDetails = ({credential} : CredentialDetailsProps ) => {
                 </div>
 
                 {/* Credential Details */}
-                <div className="flex-grow rounded-xl p-4 pt-1">
+                <div className="flex flex-col grow rounded-xl p-4 pt-1">
 
                     <div className="grid grid-cols-3 gap-x-2 my-2">
                         <label className="">Username</label>
@@ -58,9 +58,9 @@ const CredentialDetails = ({credential} : CredentialDetailsProps ) => {
                         <p className="col-span-2 border-b">{credential.modified_at}</p>
                     </div>
 
-                    <div className="flex flex-col space-y-1">
+                    <div className="flex flex-col grow overflow-y-auto">
                         <label className="">Note</label>
-                        <p className="">{credential.notes}</p>
+                        <p className="grow whitespace-pre-wrap">{credential.notes}</p>
                     </div>
 
                 </div>
