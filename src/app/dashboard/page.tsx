@@ -35,9 +35,9 @@ export default function Dashboard() {
             url: process.env.BASE_URL + "/dashboard/credentials" + "/mock",
             headers: {
                 'Content-Type': 'application/json',
-                // 'Authorization' : `Bearer ${session?.user?.token}`,
+                'Authorization': `Bearer ${session?.jwt}`,
             }
-        }, applyData);
+        }, applyData).then(r => {});
     }, [httpRequest]);
 
     useEffect(() => {
