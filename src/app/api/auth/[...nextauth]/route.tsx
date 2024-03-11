@@ -4,6 +4,24 @@ import CredentialsProvider from "next-auth/providers/credentials"
 import process from "process";
 
 const authOptions = {
+    callbacks: {
+        // TODO: Add types for both callbacks
+        jwt: async ({ token, user } : any) => {
+            if (user) {
+                return {
+                    ...token,
+                    jwt: user.jwt,
+                };
+            }
+            return token;
+        },
+        session: async ({ session, token } : any ) => {
+            if (token) {
+                session.jwt = token.jwt;
+            }
+            return session;
+        },
+    },
     providers: [
         GitHubProvider({
             clientId: process.env.GITHUB_ID ?? "",

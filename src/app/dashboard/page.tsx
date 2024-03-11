@@ -1,12 +1,13 @@
 "use client";
 
-import {useCallback, useMemo, useState} from "react";
+import {useCallback, useEffect, useMemo, useState} from "react";
 import CredentialTable from "@/components/dashboard/credential_table";
 import CredentialDetails from "@/components/dashboard/credential_details";
 import TopNavbar from "@/components/navigation/navbar";
 import {AuthModal} from "@/components/auth/auth_modal";
 import {useSession} from "next-auth/react";
 import {Skeleton} from "@nextui-org/react";
+import useHttp from "@/hooks/use_http";
 
 const columns = [
     {label: "SITE", key: "site", sortable: true},
@@ -19,73 +20,40 @@ export default function Dashboard() {
     const {data: session} = useSession();
     const [selectedCredential, setSelectedCredential] = useState<CredentialEntry | null>(null)
     const [searchInput, setSearchInput] = useState("");
+    const [credentials, setCredentials] = useState<CredentialEntry[]>([])
+    const { httpRequest, isLoading, error } = useHttp();
 
-    const credentials = [
-        {
-            "id": 1,
-            "site": {
-                "id": 1,
-                "name": "Google",
-                "url": "https://www.google.com",
-                "icon": "google_icon.png"
-            },
-            "nickname": "Gugu",
-            "username": "anasgomezd",
-            "email": "anasgomezd@gmail.com",
-            "password": "cualquiera",
-            "category": "Social",
-            "favorite": false,
-            "modified_at": "2021-10-10T12:00:00Z",
-            "created_at": "2021-10-10T12:00:00Z",
-            "notes": "Esta te la puse yo miamor. Estas son como notitas que pdoes gruardar y tambine estan encryptadas asi que son super seguras"
-        },
-        {
-            "id": 2,
-            "site": {
-                "id": 2,
-                "name": "Facebook",
-                "url": "https://www.facebook.com",
-                "icon": "facebook_icon.png"
-            },
-            "nickname": "Face",
-            "username": "anapoopis",
-            "email": "anasgomezd@gmail.com",
-            "password": "facepass",
-            "category": "Social",
-            "modified_at": "2021-10-10T12:00:00Z",
-            "created_at": "2021-10-10T12:00:00Z",
-            "favorite": true,
-            "notes": ""
-        },
-        {
-            "id": 3,
-            "site": {
-                "id": 3,
-                "name": "Twitter",
-                "url": "https://www.twitter.com",
-                "icon": "twitter_icon.png"
-            },
-            "nickname": "Ay X",
-            "username": "anita_la_huerfanita",
-            "email": "anasgomezd@gmail.com",
-            "password": "twitter_pass_!",
-            "category": "Social",
-            "modified_at": "2021-10-10T12:00:00Z",
-            "created_at": "2021-10-10T12:00:00Z",
-            "favorite": false,
-            "notes": "Test Notes"
+    const fetchData = useCallback(() => {
+        const applyData = (data: any) => {
+            console.log(data);
+            // Credential data received by the backend
+            // Check fields and transform them if necessary
+            setCredentials(data);
+        };
+
+        httpRequest({
+            url: process.env.BASE_URL + "/dashboard/credentials" + "/mock",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${session?.jwt}`,
+            }
+        }, applyData).then(r => {});
+    }, [httpRequest]);
+
+    useEffect(() => {
+        if (session?.user) {
+            fetchData();
         }
-    ];
+    }, [session?.user, fetchData]);
 
     const onSelectedCredential = (credential: CredentialEntry) => {
-        // If selected credential is the same as the one clicked, then deselect it
-        if (selectedCredential && credential.id === selectedCredential.id) {
-            console.log("Deselecting credential")
-            setSelectedCredential(null);
-            return;
-        }
-        // Else set the new selected credential
-        setSelectedCredential(credential);
+         setSelectedCredential((prevState) => {
+             // If selected credential is the same as the one clicked, then deselect it
+             if (prevState && prevState.id === credential.id) {
+                return null;
+            }
+            return credential;
+         })
     };
 
     const onSearchChange = useCallback((value?: string) => {
