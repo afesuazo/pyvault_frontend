@@ -95,7 +95,7 @@ export default function Dashboard() {
                         onCredentialSelect={onSelectedCredential}
                     />
                 </div>
-                <div className={`relative right-0 0 transition-all duration-200 ease-in-out ${selectedCredential ? "w-1/3 m-4 ml-0 p-2" : "w-0"}  rounded-2xl`}>
+                <div className={`relative right-0 0 transition-all duration-200 ease-in-out ${selectedCredential ? "w-1/3 m-4 ml-0 " : "w-0"}  rounded-2xl`}>
                     {/* Details for a selected credential */}
                     <CredentialDetails credential={selectedCredential}/>
                 </div>

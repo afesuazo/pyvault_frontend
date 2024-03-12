@@ -102,7 +102,7 @@ const CredentialTable = ({ dataColumns, data, selectedCredential, onCredentialSe
 
     const topContent = useMemo(() => {
         return (
-            <div className="flex flex-col gap-4 pt-2 px-4">
+            <div className="flex flex-col gap-4 pt-2">
                 <div className="flex justify-between items-center">
                     <Input
                         isClearable
