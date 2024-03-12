@@ -6,14 +6,15 @@ import {
     TableBody,
     TableRow,
     TableCell,
-    SortDescriptor, Button, Dropdown, DropdownTrigger, DropdownMenu, Pagination,
+    SortDescriptor, Button, Dropdown, DropdownTrigger, DropdownMenu, Pagination, Input,
 } from "@nextui-org/react";
 import {StarIcon} from "@heroicons/react/16/solid";
 
-const CredentialTable = ({ dataColumns, data, selectedCredential, onCredentialSelect, searchInput } : CredentialTableProps) => {
+const CredentialTable = ({ dataColumns, data, selectedCredential, onCredentialSelect } : CredentialTableProps) => {
 
     const [rowsPerPage, setRowsPerPage] = useState(15);
     const [page, setPage] = useState(1);
+    const [searchInput, setSearchInput] = useState("");
     const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
         column: "site",
         direction: "ascending",
@@ -87,22 +88,31 @@ const CredentialTable = ({ dataColumns, data, selectedCredential, onCredentialSe
         setPage(1);
     }, []);
 
+    const onSearchChange = useCallback((value?: string) => {
+        if (value) {
+            setSearchInput(value);
+        } else {
+            setSearchInput('');
+        }
+    }, []);
+
+    const onClear = useCallback(() => {
+        setSearchInput("")
+    }, [])
+
     const topContent = useMemo(() => {
         return (
             <div className="flex flex-col gap-4 pt-2 px-4">
                 <div className="flex justify-between items-center">
+                    <Input
+                        isClearable
+                        className="w-1/3"
+                        placeholder="Search by nickname..."
+                        value={searchInput}
+                        onClear={onClear}
+                        onValueChange={onSearchChange}
+                    />
                     <span className="text-default-400 text-small">Total {filteredItems.length} users</span>
-                    <label className="flex items-center text-default-400 text-small">
-                        Rows per page:
-                        <select
-                            className="bg-transparent outline-none text-default-400 text-small"
-                            onChange={onRowsPerPageChange}
-                        >
-                            <option value="5">5</option>
-                            <option value="10">10</option>
-                            <option value="15">15</option>
-                        </select>
-                    </label>
                 </div>
             </div>
         );
