@@ -71,7 +71,7 @@ export default function Dashboard() {
     // If the user is not logged in, show the login modal
     if (!session || !session.user) {
         return (
-            <div className="flex flex-col h-full w-full bg-gray-300 gap-y-2">
+            <div className="flex flex-col h-full w-full gap-y-2">
                 <AuthModal isOpen={true} onClose={() => {}}/>
                 {/*  Top Navbar  */}
                 <div className="w-full h-16">
@@ -97,15 +97,15 @@ export default function Dashboard() {
     }
 
     return (
-        <main className="flex flex-col h-full justify-between bg-gray-300">
+        <main className="flex flex-col h-full justify-between">
             <TopNavbar
                 currentSearchValue={searchInput}
                 onSearchChange={onSearchChange}
                 onClear={onClear}
             />
-            <div className="flex h-full justify-between bg-gray-300">
+            <div className="flex h-full justify-between">
                 <div
-                    className={`transition-width duration-300 ease-in-out ${selectedCredential ? 'w-2/3' : 'w-full'}  h-full bg-gray-300 rounded-2xl`}>
+                    className={`transition-width duration-300 ease-in-out ${selectedCredential ? 'w-2/3' : 'w-full'}  h-full rounded-2xl`}>
                     <CredentialTable
                         dataColumns={columns}
                         data={credentials}
@@ -115,7 +115,7 @@ export default function Dashboard() {
                     />
                 </div>
                 <div
-                    className={`relative right-0 bg-gray-400 transition-all duration-200 ease-in-out ${selectedCredential ? "w-1/3 m-4 ml-0 p-2" : "w-0"}  rounded-2xl`}>
+                    className={`relative right-0 0 transition-all duration-200 ease-in-out ${selectedCredential ? "w-1/3 m-4 ml-0 p-2" : "w-0"}  rounded-2xl`}>
                     {/* Details for a selected credential */}
                     <CredentialDetails credential={selectedCredential}/>
                 </div>

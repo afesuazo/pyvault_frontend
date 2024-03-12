@@ -21,7 +21,7 @@ export default async function RootLayout({
 
     return (
     <html lang="en">
-      <body className={`${inter.className} flex flex-col h-screen`}>
+      <body className={`${inter.className} flex flex-col h-screen bg-neutral-200 text-secondary-400`}>
         <SessionProvider session={session}>
             {children}
         </SessionProvider>
