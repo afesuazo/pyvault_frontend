@@ -128,21 +128,20 @@ const CredentialTable = ({ dataColumns, data, selectedCredential, onCredentialSe
 
     const bottomContent = useMemo(() => {
         return (
-            <div className="py-2 px-4 flex justify-between items-center">
+            <div className="text-secondary-500 py-2 px-4 flex justify-between items-center">
                 <Pagination
                     isCompact
                     showControls
                     showShadow
-                    color="default"
                     page={page}
                     total={pages}
                     onChange={setPage}
                 />
                 <div className="hidden sm:flex w-[30%] justify-end gap-2">
-                    <Button isDisabled={pages === 1} size="sm" variant="flat" onPress={onPreviousPage}>
+                    <Button className="bg-neutral-500" isDisabled={pages === 1} size="sm" variant="flat" onPress={onPreviousPage}>
                         Previous
                     </Button>
-                    <Button isDisabled={pages === 1} size="sm" variant="flat" onPress={onNextPage}>
+                    <Button className="bg-neutral-500" isDisabled={pages === 1} size="sm" variant="flat" onPress={onNextPage}>
                         Next
                     </Button>
                 </div>
@@ -151,9 +150,9 @@ const CredentialTable = ({ dataColumns, data, selectedCredential, onCredentialSe
     }, [items.length, page, pages]);
 
     const classNames = {
-        wrapper: ["h-full rounded-lg bg-gray-300 overflow-x-hidden shadow-none pt-0"],
-        th: ["bg-transparent", "border-b", "border-divider", "last:text-end", "[&:nth-child(2)]:text-center"],
-        tr: ["hover:bg-gray-400 border-b-1 cursor-pointer"],
+        wrapper: ["bg-neutral-100 h-full rounded-lg overflow-x-hidden shadow-none p-0"],
+        th: ["bg-neutral-500", "text-secondary-500", "border-b", "last:text-end", "[&:nth-child(2)]:text-center"],
+        tr: ["hover:bg-neutral-500 border-b-1 cursor-pointer"],
         td: [
             "first:rounded-l-xl",
             // first
@@ -168,7 +167,7 @@ const CredentialTable = ({ dataColumns, data, selectedCredential, onCredentialSe
     }
 
     return (
-        <div className="py-2 overflow-hidden h-full flex">
+        <div className="mx-4 py-2 overflow-hidden h-full flex">
             <Table
                 isHeaderSticky
                 bottomContent={bottomContent}
@@ -193,7 +192,7 @@ const CredentialTable = ({ dataColumns, data, selectedCredential, onCredentialSe
                 </TableHeader>
                 <TableBody emptyContent={"No records found"} items={sortedItems}>
                     {(item) => (
-                        <TableRow onClick={() => onCredentialSelect(item)} key={item.id} className={`transition-all duration-1000 ease-in-out transform ${selectedCredential?.id === item.id ? 'translate-x-4 bg-gray-400' : 'translate-x-0'}`}>
+                        <TableRow onClick={() => onCredentialSelect(item)} key={item.id} className={`transition-all duration-1000 ease-in-out transform ${selectedCredential?.id === item.id ? 'translate-x-4' : 'translate-x-0'}`}>
                             {(columnKey) => <TableCell
                                 className={`${selectedCredential?.id === item.id ? '' : 'last:rounded-r-xl'}`}
                             >

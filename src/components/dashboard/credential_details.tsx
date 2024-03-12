@@ -9,7 +9,7 @@ const CredentialDetails = ({credential} : CredentialDetailsProps ) => {
     }
 
     return (
-        <div className="flex flex-col h-full space-y-4 text-white overflow-hidden whitespace-nowrap ">
+        <div className="bg-neutral-100 border-4 border-neutral-500 rounded-2xl flex flex-col h-full space-y-4 overflow-hidden whitespace-nowrap">
 
             {/* User Actions */}
             <div className="flex justify-between items-center border-b p-4">
@@ -20,8 +20,8 @@ const CredentialDetails = ({credential} : CredentialDetailsProps ) => {
                     <span> {credential.nickname} </span>
                 </div>
                 <div className="flex space-x-2">
-                    <button className="bg-gray-300 hover:bg-gray-200 text-white px-3 py-1 rounded">Edit</button>
-                    <button className="bg-gray-300 hover:bg-gray-200 text-white px-3 py-1 rounded">Delete</button>
+                    <button className="bg-primary-500 hover:bg-gray-200 px-3 py-1 rounded">Edit</button>
+                    <button className="bg-primary-500 hover:bg-gray-200 px-3 py-1 rounded">Delete</button>
                 </div>
             </div>
 
