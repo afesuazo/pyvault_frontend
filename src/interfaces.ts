@@ -46,7 +46,6 @@ interface CredentialTableProps {
     data: CredentialEntry[];
     selectedCredential: CredentialEntry | null;
     onCredentialSelect: (credential: CredentialEntry) => void;
-    searchInput: string;
 }
 
 interface CredentialTableHeaderProps {

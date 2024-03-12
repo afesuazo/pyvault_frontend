@@ -19,7 +19,6 @@ export default function Dashboard() {
 
     const {data: session} = useSession();
     const [selectedCredential, setSelectedCredential] = useState<CredentialEntry | null>(null)
-    const [searchInput, setSearchInput] = useState("");
     const [credentials, setCredentials] = useState<CredentialEntry[]>([])
     const { httpRequest, isLoading, error } = useHttp();
 
@@ -47,26 +46,14 @@ export default function Dashboard() {
     }, [session?.user, fetchData]);
 
     const onSelectedCredential = (credential: CredentialEntry) => {
-         setSelectedCredential((prevState) => {
-             // If selected credential is the same as the one clicked, then deselect it
-             if (prevState && prevState.id === credential.id) {
+        setSelectedCredential((prevState) => {
+            // If selected credential is the same as the one clicked, then deselect it
+            if (prevState && prevState.id === credential.id) {
                 return null;
             }
             return credential;
-         })
+        })
     };
-
-    const onSearchChange = useCallback((value?: string) => {
-        if (value) {
-            setSearchInput(value);
-        } else {
-            setSearchInput('');
-        }
-    }, []);
-
-    const onClear = useCallback(() => {
-        setSearchInput("")
-    }, [])
 
     // If the user is not logged in, show the login modal
     if (!session || !session.user) {
@@ -98,24 +85,17 @@ export default function Dashboard() {
 
     return (
         <main className="flex flex-col h-full justify-between">
-            <TopNavbar
-                currentSearchValue={searchInput}
-                onSearchChange={onSearchChange}
-                onClear={onClear}
-            />
-            <div className="flex h-full justify-between">
-                <div
-                    className={`transition-width duration-300 ease-in-out ${selectedCredential ? 'w-2/3' : 'w-full'}  h-full rounded-2xl`}>
+            <TopNavbar/>
+            <div className="flex h-full justify-between m-2 border-2 rounded-2xl bg-neutral-100">
+                <div className={`transition-width duration-300 ease-in-out ${selectedCredential ? 'w-2/3' : 'w-full'}  h-full rounded-2xl`}>
                     <CredentialTable
                         dataColumns={columns}
                         data={credentials}
                         selectedCredential={selectedCredential}
                         onCredentialSelect={onSelectedCredential}
-                        searchInput={searchInput}
                     />
                 </div>
-                <div
-                    className={`relative right-0 0 transition-all duration-200 ease-in-out ${selectedCredential ? "w-1/3 m-4 ml-0 p-2" : "w-0"}  rounded-2xl`}>
+                <div className={`relative right-0 0 transition-all duration-200 ease-in-out ${selectedCredential ? "w-1/3 m-4 ml-0 " : "w-0"}  rounded-2xl`}>
                     {/* Details for a selected credential */}
                     <CredentialDetails credential={selectedCredential}/>
                 </div>

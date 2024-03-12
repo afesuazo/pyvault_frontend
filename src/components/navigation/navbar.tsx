@@ -16,7 +16,7 @@ import {
 import {PlusIcon, LockClosedIcon} from "@heroicons/react/16/solid";
 import {useSession} from "next-auth/react";
 
-export default function TopNavbar( {currentSearchValue, onSearchChange, onClear} : NavbarProps) {
+export default function TopNavbar( ) {
 
     const {data: session} = useSession();
 
@@ -30,16 +30,6 @@ export default function TopNavbar( {currentSearchValue, onSearchChange, onClear}
                 <NavbarBrand>
                     <p className="font-bold text-inherit">PYVAULT</p>
                 </NavbarBrand>
-                <NavbarItem>
-                    <Input
-                        isClearable
-                        className="w-full mr-20"
-                        placeholder="Search by nickname..."
-                        value={currentSearchValue}
-                        onClear={onClear}
-                        onValueChange={onSearchChange}
-                    />
-                </NavbarItem>
             </NavbarContent>
 
             <NavbarContent as="div" justify="end">
