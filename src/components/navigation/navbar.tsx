@@ -25,7 +25,7 @@ export default function TopNavbar( {currentSearchValue, onSearchChange, onClear}
     }
 
     return (
-        <Navbar isBordered maxWidth="full" className="px-2">
+        <Navbar maxWidth="full" className="px-2 bg-neutral-200">
             <NavbarContent as="div" className="justify-between hidden sm:flex gap-4" justify="center">
                 <NavbarBrand>
                     <p className="font-bold text-inherit">PYVAULT</p>
@@ -45,7 +45,7 @@ export default function TopNavbar( {currentSearchValue, onSearchChange, onClear}
             <NavbarContent as="div" justify="end">
                 <NavbarItem>
                     <Button
-                        className={"bg-gray-400 px-6 text-center"}
+                        className={"bg-primary-500 px-6 text-center"}
                         disableRipple={true}
                         onClick={() => {
                             console.log("Add New Credential")

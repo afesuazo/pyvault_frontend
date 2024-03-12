@@ -2,12 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;
@@ -15,6 +9,28 @@
     --background-end-rgb: 0, 0, 0;
   }
 }
+
+:root {
+  /* Primary colors */
+  --primary-color-500: #ff8e3c;
+
+  /* Secondary colors */
+  /* Mainly for text */
+  --secondary-color-400: #2a2a2a;
+  --secondary-color-500: #0d0d0d;
+
+  /* Accent colors */
+  --accent-color-500: #d9376e;
+
+  /* Neutral colors */
+  /* Used for backgrounds and large areas */
+  --neutral-color-100: #fffffe;
+  --neutral-color-200: #eff0f3;
+  --neutral-color-500: #A0B6C4;
+  --neutral-color-900: #7B8D9F;
+}
+
+
 
 body {
   color: rgb(var(--foreground-rgb));
