@@ -96,7 +96,7 @@ export default function Dashboard() {
                 onCreateNewCredential={toggleCreateCredentialModal}
             />
             <div className="flex h-full justify-between m-2 border-2 rounded-2xl bg-neutral-100">
-                <div className={`transition-width duration-300 ease-in-out ${selectedCredential ? 'w-2/3' : 'w-full'}  h-full rounded-2xl ${createCredentialModalOpen ? "blur-sm select-none pointer-events-none" : ""}`}>
+                <div className={`transition-width duration-300 ease-in-out ${selectedCredential || createCredentialModalOpen ? 'w-2/3' : 'w-full'}  h-full rounded-2xl ${createCredentialModalOpen ? "blur-sm select-none pointer-events-none" : ""}`}>
                     <CredentialTable
                         dataColumns={columns}
                         data={credentials}
