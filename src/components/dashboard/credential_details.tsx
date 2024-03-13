@@ -7,7 +7,7 @@ import {Textarea} from "@nextui-org/input";
 
 const CredentialDetails = ({mode, credential} : CredentialDetailsProps ) => {
 
-    const [formData, setFormData] = useState<CredentialEntry>({
+    const emptyFormData: CredentialEntry = {
         id: 0,
         site: {
             id: 0,
@@ -24,7 +24,17 @@ const CredentialDetails = ({mode, credential} : CredentialDetailsProps ) => {
         category: '',
         favorite: false,
         notes: '',
-    });
+    };
+
+    const [formData, setFormData] = useState<CredentialEntry>(emptyFormData);
+
+    useEffect(() => {
+        if (mode === DetailPanelMode.Create) {
+            setFormData(emptyFormData);
+        } else if (mode === DetailPanelMode.Edit && credential) {
+            setFormData(credential);
+        }
+    }, [mode, credential]);
 
     useEffect(() => {
         if (mode !== DetailPanelMode.Create && credential) {
