@@ -1,10 +1,45 @@
 import Link from "next/link";
 import {StarIcon} from "@heroicons/react/16/solid";
+import {useEffect, useState} from "react";
+import {CredentialDetailsProps, CredentialEntry, DetailPanelMode} from "@/interfaces";
 
-const CredentialDetails = ({credential} : CredentialDetailsProps ) => {
+const CredentialDetails = ({mode, credential} : CredentialDetailsProps ) => {
+
+    const [formData, setFormData] = useState<CredentialEntry>({
+        id: 0,
+        site: {
+            id: 0,
+            name: '',
+            url: '',
+            icon: '',
+        },
+        nickname: '',
+        username: '',
+        email: '',
+        created_at: '',
+        modified_at: '',
+        password: '',
+        category: '',
+        favorite: false,
+        notes: '',
+    });
+
+    useEffect(() => {
+        if (mode !== DetailPanelMode.Create && credential) {
+            setFormData(credential);
+        }
+    }, [mode, credential]);
+
+    const handleChange = (event: any) => {
+        const { name, value, checked, type } = event.target;
+        setFormData((prevData) => ({
+            ...prevData,
+            [name]: type === 'checkbox' ? checked : value,
+        }));
+    };
 
     // Nothing to render when no credential is selected
-    if (!credential) {
+    if (!credential && mode !== DetailPanelMode.Create) {
         return null;
     }
 
@@ -15,9 +50,9 @@ const CredentialDetails = ({credential} : CredentialDetailsProps ) => {
             <div className="flex justify-between items-center border-b p-4">
                 <div className="text-2xl font-semibold flex align-middle space-x-2">
                     <span>
-                        <StarIcon className={`h-8 w-8 hover:text-opacity-100 ${credential.favorite ? "hover:text-opacity-60 text-amber-400" : "text-opacity-60 text-gray-300"}`}/>
+                        <StarIcon className={`h-8 w-8 hover:text-opacity-100 ${credential?.favorite ? "hover:text-opacity-60 text-amber-400" : "text-opacity-60 text-gray-300"}`}/>
                     </span>
-                    <span> {credential.nickname} </span>
+                    <span> {credential?.nickname} </span>
                 </div>
                 <div className="flex space-x-2">
                     <button className="bg-primary-500 hover:bg-gray-200 px-3 py-1 rounded">Edit</button>
@@ -30,10 +65,10 @@ const CredentialDetails = ({credential} : CredentialDetailsProps ) => {
 
                 {/* Site Details */}
                 <div className="flex items-center space-x-4 p-2">
-                    <img src={credential.site.icon} alt="Site Icon" className="w-16 h-16 rounded-full border"/>
+                    <img src={credential?.site.icon} alt="Site Icon" className="w-16 h-16 rounded-full border"/>
                     <div>
-                        <h2 className="text-xl font-bold">{credential.site.name}</h2>
-                        <Link href={credential.site.url} target="_blank" className="text-white underline">{credential.site.url}</Link>
+                        <h2 className="text-xl font-bold">{credential?.site.name}</h2>
+                        <Link href={credential?.site.url || "#"} target="_blank" className="text-white underline">{credential?.site.url}</Link>
                     </div>
                 </div>
 
@@ -42,25 +77,25 @@ const CredentialDetails = ({credential} : CredentialDetailsProps ) => {
 
                     <div className="grid grid-cols-3 gap-x-2 my-2">
                         <label className="">Username</label>
-                        <p className="col-span-2 border-b">{credential.username}</p>
+                        <p className="col-span-2 border-b">{credential?.username}</p>
                     </div>
                     <div className="grid grid-cols-3 gap-x-2 my-2">
                         <label className="">Email</label>
-                        <p className="col-span-2 border-b">{credential.email}</p>
+                        <p className="col-span-2 border-b">{credential?.email}</p>
                     </div>
                     <div className="grid grid-cols-3 gap-x-2 my-2">
                         <label className="">Password</label>
-                        <p className="col-span-2 border-b">{credential.password}</p>
+                        <p className="col-span-2 border-b">{credential?.password}</p>
                     </div>
 
                     <div className="grid grid-cols-3 gap-x-2 my-8">
                         <label className="">Last Modified</label>
-                        <p className="col-span-2 border-b">{credential.modified_at}</p>
+                        <p className="col-span-2 border-b">{credential?.modified_at}</p>
                     </div>
 
                     <div className="flex flex-col grow overflow-y-auto">
                         <label className="">Note</label>
-                        <p className="grow whitespace-pre-wrap">{credential.notes}</p>
+                        <p className="grow whitespace-pre-wrap">{credential?.notes}</p>
                     </div>
 
                 </div>

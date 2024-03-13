@@ -1,4 +1,5 @@
 import {useCallback, useState} from "react";
+import {HttpRequestConfig} from "@/interfaces";
 
 const credentials = [
     {

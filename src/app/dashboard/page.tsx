@@ -8,6 +8,7 @@ import {AuthModal} from "@/components/auth/auth_modal";
 import {useSession} from "next-auth/react";
 import {Skeleton} from "@nextui-org/react";
 import useHttp from "@/hooks/use_http";
+import {CredentialEntry, DetailPanelMode} from "@/interfaces";
 
 const columns = [
     {label: "SITE", key: "site", sortable: true},
@@ -21,6 +22,7 @@ export default function Dashboard() {
     const [selectedCredential, setSelectedCredential] = useState<CredentialEntry | null>(null)
     const [credentials, setCredentials] = useState<CredentialEntry[]>([])
     const { httpRequest, isLoading, error } = useHttp();
+    const [createCredentialModalOpen, setCreateCredentialModalOpen] = useState(false);
 
     const fetchData = useCallback(() => {
         const applyData = (data: any) => {
@@ -55,6 +57,11 @@ export default function Dashboard() {
         })
     };
 
+    const toggleCreateCredentialModal = () => {
+        setSelectedCredential(null);
+        setCreateCredentialModalOpen(prev => !prev);
+    };
+
     // If the user is not logged in, show the login modal
     if (!session || !session.user) {
         return (
@@ -85,9 +92,11 @@ export default function Dashboard() {
 
     return (
         <main className="flex flex-col h-full justify-between">
-            <TopNavbar/>
+            <TopNavbar
+                onCreateNewCredential={toggleCreateCredentialModal}
+            />
             <div className="flex h-full justify-between m-2 border-2 rounded-2xl bg-neutral-100">
-                <div className={`transition-width duration-300 ease-in-out ${selectedCredential ? 'w-2/3' : 'w-full'}  h-full rounded-2xl`}>
+                <div className={`transition-width duration-300 ease-in-out ${selectedCredential ? 'w-2/3' : 'w-full'}  h-full rounded-2xl ${createCredentialModalOpen ? "blur-sm select-none pointer-events-none" : ""}`}>
                     <CredentialTable
                         dataColumns={columns}
                         data={credentials}
@@ -95,9 +104,14 @@ export default function Dashboard() {
                         onCredentialSelect={onSelectedCredential}
                     />
                 </div>
-                <div className={`relative right-0 0 transition-all duration-200 ease-in-out ${selectedCredential ? "w-1/3 m-4 ml-0 " : "w-0"}  rounded-2xl`}>
+                <div className={`relative right-0 0 transition-all duration-200 ease-in-out ${selectedCredential || createCredentialModalOpen ? "w-1/3 m-4 ml-0 " : "w-0"}  rounded-2xl`}>
                     {/* Details for a selected credential */}
-                    <CredentialDetails credential={selectedCredential}/>
+                    <CredentialDetails
+                        credential={selectedCredential}
+                        mode={selectedCredential ? DetailPanelMode.View : DetailPanelMode.Create}
+                        onCancel={() => setSelectedCredential(null)}
+                        onSave={(data) => {}}
+                    />
                 </div>
             </div>
         </main>

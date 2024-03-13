@@ -1,4 +1,5 @@
 import {useEffect, useState} from "react";
+import {Feature, FeaturesProps} from "@/interfaces";
 
 const features: Feature[] = [
     {key: 0, title: "Feature 1", description: "Description of feature 1"},

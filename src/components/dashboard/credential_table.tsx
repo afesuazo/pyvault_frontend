@@ -9,6 +9,7 @@ import {
     SortDescriptor, Button, Dropdown, DropdownTrigger, DropdownMenu, Pagination, Input,
 } from "@nextui-org/react";
 import {StarIcon} from "@heroicons/react/16/solid";
+import {CredentialEntry, CredentialTableProps} from "@/interfaces";
 
 const CredentialTable = ({ dataColumns, data, selectedCredential, onCredentialSelect } : CredentialTableProps) => {
 
