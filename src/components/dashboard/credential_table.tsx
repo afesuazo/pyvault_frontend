@@ -17,7 +17,7 @@ const CredentialTable = ({ dataColumns, data, selectedCredential, onCredentialSe
     const [page, setPage] = useState(1);
     const [searchInput, setSearchInput] = useState("");
     const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
-        column: "site",
+        column: "nickname",
         direction: "ascending",
     });
 
