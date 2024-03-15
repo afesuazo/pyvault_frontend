@@ -5,18 +5,18 @@ import {
     NavbarBrand,
     NavbarContent,
     NavbarItem,
-    Link,
     DropdownItem,
     DropdownTrigger,
     Dropdown,
     DropdownMenu,
     Avatar,
-    Input, Button, Skeleton
+    Button
 } from "@nextui-org/react";
 import {PlusIcon, LockClosedIcon} from "@heroicons/react/16/solid";
 import {useSession} from "next-auth/react";
+import {NavbarProps} from "@/interfaces";
 
-export default function TopNavbar( ) {
+export default function TopNavbar( {onCreateNewCredential}: NavbarProps ) {
 
     const {data: session} = useSession();
 
@@ -37,9 +37,7 @@ export default function TopNavbar( ) {
                     <Button
                         className={"bg-primary-500 px-6 text-center"}
                         disableRipple={true}
-                        onClick={() => {
-                            console.log("Add New Credential")
-                        }}
+                        onClick={onCreateNewCredential}
                         endContent={<PlusIcon className={"w-[24px] h-[24px] text-black"}/>}>
                         Add New
                     </Button>

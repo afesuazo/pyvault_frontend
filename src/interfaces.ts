@@ -1,35 +1,35 @@
-interface MainContentProps {
+export interface MainContentProps {
     isLockHovered: boolean;
     setIsLockHovered: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-interface FeaturesProps {
+export interface FeaturesProps {
     isLockHovered: boolean;
 }
 
-interface Feature {
+export interface Feature {
     key: number;
     title: string;
     description: string;
 }
 
 
-interface Site {
+export interface Site {
     id: number;
     name: string;
     url: string;
     icon: string;
 }
 
-interface CredentialColumn {
+export interface CredentialColumn {
     key: string;
     label: string;
     sortable: boolean;
 }
 
-interface CredentialEntry {
+export interface CredentialEntry {
     id: number;
-    site: Site;
+    site: Site | null;
     nickname: string;
     username: string;
     email: string;
@@ -41,41 +41,39 @@ interface CredentialEntry {
     notes: string;
 }
 
-interface CredentialTableProps {
+export interface CredentialTableProps {
     dataColumns: CredentialColumn[];
     data: CredentialEntry[];
     selectedCredential: CredentialEntry | null;
     onCredentialSelect: (credential: CredentialEntry) => void;
 }
 
-interface CredentialTableHeaderProps {
-    onSearch:(searchTerm: string) => void;
+
+export enum DetailPanelMode {
+    View = "view",
+    Edit = "edit",
+    Create = "create",
 }
 
-interface CredentialTableItemProps {
-    credential: CredentialEntry;
-    isSelected: boolean;
-    onSelect: (selectedCredential: CredentialEntry) => void;
+export interface CredentialDetailsProps {
+    mode: DetailPanelMode;
+    credential: CredentialEntry | null,
+    onSave: (credential: CredentialEntry) => void;
+    onCancel: () => void;
 }
 
-interface CredentialDetailsProps {
-    credential: CredentialEntry | null;
+export interface NavbarProps {
+    onCreateNewCredential: () => void;
 }
 
-interface NavbarProps {
-    currentSearchValue: string;
-    onSearchChange:(searchTerm: string) => void;
-    onClear: () => void;
-}
-
-interface AuthModalProps {
+export interface AuthModalProps {
     isOpen: boolean;
     onClose: () => void;
 }
 
-interface HttpRequestConfig {
+export interface HttpRequestConfig {
     method?: string;
     url: string;
     headers?: any;
-    body?: string;
+    body?: any;
 }

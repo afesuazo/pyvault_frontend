@@ -6,6 +6,7 @@ import {MailIcon, Lock} from "@nextui-org/shared-icons";
 import Link from "next/link";
 import { signIn, signOut } from "next-auth/react";
 import {useState} from "react";
+import {AuthModalProps} from "@/interfaces";
 
 export const AuthModal = ({isOpen, onClose} : AuthModalProps) => {
 
@@ -81,7 +82,7 @@ export const AuthModal = ({isOpen, onClose} : AuthModalProps) => {
                     </div>
                 </ModalBody>
                 <ModalFooter>
-                    <Button color="primary" onPress={loginHandler}>
+                    <Button className="bg-primary-500" onPress={loginHandler}>
                         Sign in
                     </Button>
                 </ModalFooter>

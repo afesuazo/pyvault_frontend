@@ -8,6 +8,7 @@ import {AuthModal} from "@/components/auth/auth_modal";
 import {useSession} from "next-auth/react";
 import {Skeleton} from "@nextui-org/react";
 import useHttp from "@/hooks/use_http";
+import {CredentialEntry, DetailPanelMode} from "@/interfaces";
 
 const columns = [
     {label: "SITE", key: "site", sortable: true},
@@ -17,26 +18,33 @@ const columns = [
 
 export default function Dashboard() {
 
-    const {data: session} = useSession();
+    const { data: session } = useSession();
     const [selectedCredential, setSelectedCredential] = useState<CredentialEntry | null>(null)
     const [credentials, setCredentials] = useState<CredentialEntry[]>([])
     const { httpRequest, isLoading, error } = useHttp();
+    const [createCredentialModalOpen, setCreateCredentialModalOpen] = useState(false);
 
     const fetchData = useCallback(() => {
+        console.log("Session: ", session);
+
         const applyData = (data: any) => {
-            console.log(data);
             // Credential data received by the backend
             // Check fields and transform them if necessary
             setCredentials(data);
         };
 
         httpRequest({
-            url: process.env.BASE_URL + "/dashboard/credentials" + "/mock",
+            url: `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/credentials`,
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${session?.jwt}`,
+                'Authorization': `Bearer ${session?.accessToken}`,
             }
         }, applyData).then(r => {});
+
+        if (error) {
+            console.error("Error log: ", error);
+        }
+
     }, [httpRequest]);
 
     useEffect(() => {
@@ -53,6 +61,53 @@ export default function Dashboard() {
             }
             return credential;
         })
+    };
+
+    const onCredentialSave = async (data: CredentialEntry) => {
+        const saveCredential = async () => {
+            const applyData = (savedData: any) => {
+                // Add the saved credential to the list of credentials
+                setCredentials(prevState => [...prevState, savedData]);
+            };
+
+            const requestBody = {
+                nickname: data.nickname,
+                email: data.email,
+                username: data.username,
+                encrypted_password: data.password,
+                favorite: data.favorite,
+                site_id: data.site?.id,
+                user_id: 0,
+            };
+
+            await httpRequest({
+                url: `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/credentials`,
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${session?.accessToken}`,
+                },
+                body: requestBody,
+            }, applyData);
+
+            if (error) {
+                console.error("Error log: ", error);
+            }
+
+        };
+
+        try {
+            await saveCredential();
+            setCreateCredentialModalOpen(false);
+        }
+        catch (error) {
+            console.error("Error saving credential", error);
+        }
+    }
+
+    const toggleCreateCredentialModal = () => {
+        setSelectedCredential(null);
+        setCreateCredentialModalOpen(prev => !prev);
     };
 
     // If the user is not logged in, show the login modal
@@ -85,9 +140,11 @@ export default function Dashboard() {
 
     return (
         <main className="flex flex-col h-full justify-between">
-            <TopNavbar/>
+            <TopNavbar
+                onCreateNewCredential={toggleCreateCredentialModal}
+            />
             <div className="flex h-full justify-between m-2 border-2 rounded-2xl bg-neutral-100">
-                <div className={`transition-width duration-300 ease-in-out ${selectedCredential ? 'w-2/3' : 'w-full'}  h-full rounded-2xl`}>
+                <div className={`transition-width duration-300 ease-in-out ${selectedCredential || createCredentialModalOpen ? 'w-2/3' : 'w-full'}  h-full rounded-2xl ${createCredentialModalOpen ? "blur-sm select-none pointer-events-none" : ""}`}>
                     <CredentialTable
                         dataColumns={columns}
                         data={credentials}
@@ -95,9 +152,14 @@ export default function Dashboard() {
                         onCredentialSelect={onSelectedCredential}
                     />
                 </div>
-                <div className={`relative right-0 0 transition-all duration-200 ease-in-out ${selectedCredential ? "w-1/3 m-4 ml-0 " : "w-0"}  rounded-2xl`}>
+                <div className={`relative right-0 0 transition-all duration-200 ease-in-out ${selectedCredential || createCredentialModalOpen ? "w-1/3 m-4 ml-0 " : "w-0"}  rounded-2xl`}>
                     {/* Details for a selected credential */}
-                    <CredentialDetails credential={selectedCredential}/>
+                    <CredentialDetails
+                        credential={selectedCredential}
+                        mode={selectedCredential ? DetailPanelMode.View : DetailPanelMode.Create}
+                        onCancel={() => setCreateCredentialModalOpen(false)}
+                        onSave={onCredentialSave}
+                    />
                 </div>
             </div>
         </main>
