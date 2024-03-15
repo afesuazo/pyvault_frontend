@@ -6,7 +6,7 @@ import {
     TableBody,
     TableRow,
     TableCell,
-    SortDescriptor, Button, Dropdown, DropdownTrigger, DropdownMenu, Pagination, Input,
+    SortDescriptor, Button, Dropdown, DropdownTrigger, DropdownMenu, Pagination, Input, Avatar,
 } from "@nextui-org/react";
 import {StarIcon} from "@heroicons/react/16/solid";
 import {CredentialEntry, CredentialTableProps} from "@/interfaces";
@@ -51,14 +51,13 @@ const CredentialTable = ({ dataColumns, data, selectedCredential, onCredentialSe
             case "site":
                 return (
                     <div className="flex items-center space-x-2">
-                        <div className="mr-2 border-2 rounded-2xl p-1 shadow-md">
-                            <img
-                                src={`/${credential.site?.icon}`}
-                                alt={credential.site?.name}
-                                className="w-6 h-6 rounded-full"
-                            >
-                            </img>
-                        </div>
+                        <Avatar
+                            showFallback
+                            color="default"
+                            src={`/${credential.site?.icon}`}
+                            name={credential.site?.name || "N/A"}
+                            size="md"
+                        />
                         <span className="hidden md:block">{credential.site?.name}</span>
                     </div>
                 );

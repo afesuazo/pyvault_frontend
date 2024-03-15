@@ -48,9 +48,8 @@ export default function TopNavbar( {onCreateNewCredential}: NavbarProps ) {
                             isBordered
                             as="button"
                             className="transition-transform"
-                            name={session?.user?.name ? session.user.name : "0"}
+                            name={session.user.name ? session.user.name.toUpperCase() : "User"}
                             size="md"
-                            src=""
                         />
                     </DropdownTrigger>
                     <DropdownMenu
