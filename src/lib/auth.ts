@@ -19,7 +19,7 @@ export const config = {
         session: async ({ session, token } : any ) => {
             // console.log("Session Callback: ", session, token)
             session.accessToken = token.accessToken;
-            session.user.username = token.username;
+            session.user.name = token.username;
             // console.log("Session Post Callback: ", session)
             return session;
         },
