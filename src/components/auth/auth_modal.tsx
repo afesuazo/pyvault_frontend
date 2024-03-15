@@ -82,7 +82,7 @@ export const AuthModal = ({isOpen, onClose} : AuthModalProps) => {
                     </div>
                 </ModalBody>
                 <ModalFooter>
-                    <Button color="primary" onPress={loginHandler}>
+                    <Button className="bg-primary-500" onPress={loginHandler}>
                         Sign in
                     </Button>
                 </ModalFooter>

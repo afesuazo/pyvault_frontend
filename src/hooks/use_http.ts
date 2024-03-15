@@ -66,14 +66,6 @@ const useHttp = () => {
         setIsLoading(true);
         setError(null);
 
-        if (requestConfig.url.endsWith("mock")) {
-            setTimeout(() => {
-                applyData(credentials);
-                setIsLoading(false);
-            }, 500); // Delay in milliseconds
-            return;
-        }
-
         try {
             const response = await fetch(
                 requestConfig.url, {
@@ -85,7 +77,7 @@ const useHttp = () => {
             )
 
             if (!response.ok) {
-                console.log(response.status)
+                console.log("HTTP response: ", response)
                 throw new Error("HTTP Request Failed")
             }
 

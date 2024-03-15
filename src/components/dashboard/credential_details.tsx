@@ -5,16 +5,11 @@ import {Link, Input} from "@nextui-org/react";
 import {Textarea} from "@nextui-org/input";
 
 
-const CredentialDetails = ({mode, credential} : CredentialDetailsProps ) => {
+const CredentialDetails = ({mode, credential, onSave, onCancel} : CredentialDetailsProps ) => {
 
     const emptyFormData: CredentialEntry = {
         id: 0,
-        site: {
-            id: 0,
-            name: '',
-            url: '',
-            icon: '',
-        },
+        site: null,
         nickname: '',
         username: '',
         email: '',
@@ -42,9 +37,18 @@ const CredentialDetails = ({mode, credential} : CredentialDetailsProps ) => {
         }
     }, [mode, credential]);
 
+    const handleSubmit = (event: any) => {
+        event.preventDefault();
+        onSave(formData);
+    }
+
+    const onCanceled = (event: any) => {
+        event.preventDefault();
+        onCancel();
+    }
+
     const handleChange = (event: any) => {
         const { name, value, checked, type } = event.target;
-        console.log(name, value, checked, type)
         setFormData((prevData) => ({
             ...prevData,
             [name]: type === 'checkbox' ? checked : value,
@@ -67,8 +71,7 @@ const CredentialDetails = ({mode, credential} : CredentialDetailsProps ) => {
     }
 
     return (
-        <div className="bg-neutral-100 border-4 border-neutral-500 rounded-2xl flex flex-col h-full space-y-4 overflow-hidden whitespace-nowrap">
-
+        <form onSubmit={handleSubmit} className="bg-neutral-100 border-4 border-neutral-500 rounded-2xl flex flex-col h-full space-y-4 overflow-hidden whitespace-nowrap">
             {/* User Actions */}
             <div className="flex justify-between items-center border-b p-4">
                 <div className="text-2xl font-semibold flex align-middle space-x-2">
@@ -84,10 +87,18 @@ const CredentialDetails = ({mode, credential} : CredentialDetailsProps ) => {
                         readOnly={mode === 'view'}
                     />
                 </div>
-                <div className="flex space-x-2">
-                    <button className="bg-primary-500 hover:bg-gray-200 px-3 py-1 rounded">Edit</button>
-                    <button className="bg-primary-500 hover:bg-gray-200 px-3 py-1 rounded">Delete</button>
-                </div>
+                {mode === DetailPanelMode.View ? (
+                    <div className="flex space-x-2">
+                        <button className="bg-primary-500 hover:bg-gray-200 p-2 rounded">Edit</button>
+                        <button className="bg-primary-500 hover:bg-gray-200 p-2 rounded">Delete</button>
+                    </div>
+                ) : (
+                    <div className="flex space-x-2">
+                        <button type="submit" className="bg-primary-500 hover:bg-gray-200 p-2 rounded">Save</button>
+                        <button type="button" onClick={onCanceled} className="bg-primary-500 hover:bg-gray-200 p-2 rounded">Cancel</button>
+                    </div>
+                )}
+
             </div>
 
             {/* Credential Details */}
@@ -95,10 +106,10 @@ const CredentialDetails = ({mode, credential} : CredentialDetailsProps ) => {
 
                 {/* Site Details */}
                 <div className="flex items-center space-x-4 p-2">
-                    <img src={credential?.site.icon} alt="Site Icon" className="w-16 h-16 rounded-full border"/>
+                <img src={credential?.site?.icon} alt="Site Icon" className="w-16 h-16 rounded-full border"/>
                     <div>
-                        <h2 className="text-xl font-bold">{credential?.site.name}</h2>
-                        <Link href={credential?.site.url || "#"} target="_blank">{credential?.site.url}</Link>
+                        <h2 className="text-xl font-bold">{credential?.site?.name}</h2>
+                        <Link href={credential?.site?.url || "#"} target="_blank">{credential?.site?.url}</Link>
                     </div>
                 </div>
 
@@ -157,6 +168,8 @@ const CredentialDetails = ({mode, credential} : CredentialDetailsProps ) => {
                     <Textarea
                         label="Notes"
                         name="notes"
+                        minRows={2}
+                        maxRows={6}
                         classNames={classNames}
                         className="mt-10"
                         labelPlacement={"outside"}
@@ -170,7 +183,7 @@ const CredentialDetails = ({mode, credential} : CredentialDetailsProps ) => {
 
             </div>
 
-        </div>
+        </form>
     );
 }
 

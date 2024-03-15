@@ -18,27 +18,33 @@ const columns = [
 
 export default function Dashboard() {
 
-    const {data: session} = useSession();
+    const { data: session } = useSession();
     const [selectedCredential, setSelectedCredential] = useState<CredentialEntry | null>(null)
     const [credentials, setCredentials] = useState<CredentialEntry[]>([])
     const { httpRequest, isLoading, error } = useHttp();
     const [createCredentialModalOpen, setCreateCredentialModalOpen] = useState(false);
 
     const fetchData = useCallback(() => {
+        console.log("Session: ", session);
+
         const applyData = (data: any) => {
-            console.log(data);
             // Credential data received by the backend
             // Check fields and transform them if necessary
             setCredentials(data);
         };
 
         httpRequest({
-            url: process.env.BASE_URL + "/dashboard/credentials" + "/mock",
+            url: `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/credentials`,
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${session?.jwt}`,
+                'Authorization': `Bearer ${session?.accessToken}`,
             }
         }, applyData).then(r => {});
+
+        if (error) {
+            console.error("Error log: ", error);
+        }
+
     }, [httpRequest]);
 
     useEffect(() => {
@@ -56,6 +62,48 @@ export default function Dashboard() {
             return credential;
         })
     };
+
+    const onCredentialSave = async (data: CredentialEntry) => {
+        const saveCredential = async () => {
+            const applyData = (savedData: any) => {
+                // Add the saved credential to the list of credentials
+                setCredentials(prevState => [...prevState, savedData]);
+            };
+
+            const requestBody = {
+                nickname: data.nickname,
+                email: data.email,
+                username: data.username,
+                encrypted_password: data.password,
+                favorite: data.favorite,
+                site_id: data.site?.id,
+                user_id: 0,
+            };
+
+            await httpRequest({
+                url: `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/credentials`,
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${session?.accessToken}`,
+                },
+                body: requestBody,
+            }, applyData);
+
+            if (error) {
+                console.error("Error log: ", error);
+            }
+
+        };
+
+        try {
+            await saveCredential();
+            setCreateCredentialModalOpen(false);
+        }
+        catch (error) {
+            console.error("Error saving credential", error);
+        }
+    }
 
     const toggleCreateCredentialModal = () => {
         setSelectedCredential(null);
@@ -109,8 +157,8 @@ export default function Dashboard() {
                     <CredentialDetails
                         credential={selectedCredential}
                         mode={selectedCredential ? DetailPanelMode.View : DetailPanelMode.Create}
-                        onCancel={() => setSelectedCredential(null)}
-                        onSave={(data) => {}}
+                        onCancel={() => setCreateCredentialModalOpen(false)}
+                        onSave={onCredentialSave}
                     />
                 </div>
             </div>

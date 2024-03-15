@@ -29,7 +29,7 @@ export interface CredentialColumn {
 
 export interface CredentialEntry {
     id: number;
-    site: Site;
+    site: Site | null;
     nickname: string;
     username: string;
     email: string;
@@ -75,5 +75,5 @@ export interface HttpRequestConfig {
     method?: string;
     url: string;
     headers?: any;
-    body?: string;
+    body?: any;
 }
