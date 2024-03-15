@@ -17,7 +17,7 @@ const CredentialTable = ({ dataColumns, data, selectedCredential, onCredentialSe
     const [page, setPage] = useState(1);
     const [searchInput, setSearchInput] = useState("");
     const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
-        column: "site",
+        column: "nickname",
         direction: "ascending",
     });
 
@@ -180,6 +180,7 @@ const CredentialTable = ({ dataColumns, data, selectedCredential, onCredentialSe
     return (
         <div className="mx-4 py-2 overflow-hidden h-full flex">
             <Table
+                layout={"fixed"}
                 isHeaderSticky
                 bottomContent={bottomContent}
                 bottomContentPlacement="outside"
