@@ -50,10 +50,12 @@ const CredentialTable = ({ dataColumns, data, selectedCredential, onCredentialSe
         switch (columnKey) {
             case "site":
                 return (
-                    <div className="flex items-center space-x-2">
+                    <div className="flex items-center space-x-2 bg-purpl">
                         <Avatar
                             showFallback
-                            color="default"
+                            classNames={{
+                                base: "bg-gradient-to-br from-[#FFB457] to-[#FF705B]",
+                            }}
                             src={`/${credential.site?.icon}`}
                             name={credential.site?.name || "N/A"}
                             size="md"
