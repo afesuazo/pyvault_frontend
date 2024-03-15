@@ -180,6 +180,7 @@ const CredentialTable = ({ dataColumns, data, selectedCredential, onCredentialSe
     return (
         <div className="mx-4 py-2 overflow-hidden h-full flex">
             <Table
+                layout={"fixed"}
                 isHeaderSticky
                 bottomContent={bottomContent}
                 bottomContentPlacement="outside"
