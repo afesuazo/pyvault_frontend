@@ -1,7 +1,7 @@
 import {StarIcon} from "@heroicons/react/16/solid";
 import {useEffect, useState} from "react";
 import {CredentialDetailsProps, CredentialEntry, DetailPanelMode} from "@/interfaces";
-import {Link, Input} from "@nextui-org/react";
+import {Link, Input, Button} from "@nextui-org/react";
 import {Textarea} from "@nextui-org/input";
 
 
@@ -89,13 +89,13 @@ const CredentialDetails = ({mode, credential, onSave, onCancel} : CredentialDeta
                 </div>
                 {mode === DetailPanelMode.View ? (
                     <div className="flex space-x-2">
-                        <button className="bg-primary-500 hover:bg-gray-200 p-2 rounded">Edit</button>
-                        <button className="bg-primary-500 hover:bg-gray-200 p-2 rounded">Delete</button>
+                        <Button className="bg-primary-500 hover:bg-gray-200 p-2 rounded">Edit</Button>
+                        <Button className="bg-primary-500 hover:bg-gray-200 p-2 rounded">Delete</Button>
                     </div>
                 ) : (
                     <div className="flex space-x-2">
-                        <button type="submit" className="bg-primary-500 hover:bg-gray-200 p-2 rounded">Save</button>
-                        <button type="button" onClick={onCanceled} className="bg-primary-500 hover:bg-gray-200 p-2 rounded">Cancel</button>
+                        <Button type="submit" className="bg-primary-500 hover:bg-gray-200 p-2 rounded">Save</Button>
+                        <Button type="button" onPress={onCanceled} className="bg-primary-500 hover:bg-gray-200 p-2 rounded">Cancel</Button>
                     </div>
                 )}
 
