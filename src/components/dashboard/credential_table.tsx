@@ -12,7 +12,7 @@ import {StarIcon} from "@heroicons/react/16/solid";
 import {CredentialEntry, CredentialTableProps} from "@/interfaces";
 import {Key} from "@react-types/shared";
 
-const CredentialTable = ({ dataColumns, data, selectedCredential, onCredentialSelect } : CredentialTableProps) => {
+const CredentialTable = ({dataColumns, data, selectedCredential, onCredentialSelect}: CredentialTableProps) => {
 
     const [rowsPerPage, setRowsPerPage] = useState(15);
     const [page, setPage] = useState(1);
@@ -75,7 +75,8 @@ const CredentialTable = ({ dataColumns, data, selectedCredential, onCredentialSe
                 return (
                     <div className="hidden lg:block text-right">
                         <Button isIconOnly size="sm" className="bg-transparent">
-                            <StarIcon className={`hover:text-opacity-100 ${credential.favorite ? "hover:text-opacity-60 text-amber-400" : "text-opacity-60 text-gray-400"}`}/>
+                            <StarIcon
+                                className={`hover:text-opacity-100 ${credential.favorite ? "hover:text-opacity-60 text-amber-400" : "text-opacity-60 text-gray-400"}`}/>
                         </Button>
                     </div>
 
@@ -85,7 +86,7 @@ const CredentialTable = ({ dataColumns, data, selectedCredential, onCredentialSe
         }
     }, []);
 
-    const onRowsPerPageChange = useCallback((e:ChangeEvent<HTMLSelectElement>) => {
+    const onRowsPerPageChange = useCallback((e: ChangeEvent<HTMLSelectElement>) => {
         setRowsPerPage(Number(e.target.value));
         setPage(1);
     }, []);
@@ -150,10 +151,12 @@ const CredentialTable = ({ dataColumns, data, selectedCredential, onCredentialSe
                     onChange={setPage}
                 />
                 <div className="hidden sm:flex w-[30%] justify-end gap-2">
-                    <Button className="bg-neutral-500" isDisabled={pages === 1} size="sm" variant="flat" onPress={onPreviousPage}>
+                    <Button className="bg-neutral-500" isDisabled={pages === 1} size="sm" variant="flat"
+                            onPress={onPreviousPage}>
                         Previous
                     </Button>
-                    <Button className="bg-neutral-500" isDisabled={pages === 1} size="sm" variant="flat" onPress={onNextPage}>
+                    <Button className="bg-neutral-500" isDisabled={pages === 1} size="sm" variant="flat"
+                            onPress={onNextPage}>
                         Next
                     </Button>
                 </div>
@@ -164,7 +167,7 @@ const CredentialTable = ({ dataColumns, data, selectedCredential, onCredentialSe
     const classNames = {
         wrapper: ["bg-neutral-100 h-full rounded-lg overflow-x-hidden shadow-none p-0"],
         th: ["bg-neutral-500", "text-secondary-500", "border-b", "last:text-end", "[&:nth-child(2)]:text-center"],
-        tr: ["hover:bg-neutral-500 border-b-1 cursor-pointer"],
+        tr: ["hover:bg-neutral-500 border-b-1 cursor-pointer", "data-[selected=true]:bg-primary-500 data-[selected=true]:transition-color data-[selected=true]:duration-5000 data-[selected=true]:ease-in-out"],
         td: [
             "first:rounded-l-xl",
             // first
@@ -196,8 +199,10 @@ const CredentialTable = ({ dataColumns, data, selectedCredential, onCredentialSe
     return (
         <div className="mx-4 py-2 overflow-hidden h-full flex">
             <Table
+                aria-label={"Credential Table"}
                 layout={"fixed"}
                 isHeaderSticky
+                allowDuplicateSelectionEvents={true}
                 bottomContent={bottomContent}
                 bottomContentPlacement="outside"
                 classNames={classNames}
@@ -223,8 +228,9 @@ const CredentialTable = ({ dataColumns, data, selectedCredential, onCredentialSe
                 <TableBody emptyContent={"No records found"} items={sortedItems}>
                     {(item) => (
                         <TableRow>
-                            {(columnKey) => <TableCell className={`${selectedCredential?.id === item.id ? '' : 'last:rounded-r-xl'}`}>
-                                {/* @ts-ignore*/ }
+                            {(columnKey) => <TableCell
+                                className={`${selectedCredential?.id === item.id ? '' : 'last:rounded-r-xl'}`}>
+                                {/* @ts-ignore*/}
                                 {renderCell(item, columnKey)}
                             </TableCell>}
                         </TableRow>
