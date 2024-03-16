@@ -10,6 +10,7 @@ import {
 } from "@nextui-org/react";
 import {StarIcon} from "@heroicons/react/16/solid";
 import {CredentialEntry, CredentialTableProps} from "@/interfaces";
+import {Key} from "@react-types/shared";
 
 const CredentialTable = ({ dataColumns, data, selectedCredential, onCredentialSelect } : CredentialTableProps) => {
 
@@ -56,7 +57,6 @@ const CredentialTable = ({ dataColumns, data, selectedCredential, onCredentialSe
                             classNames={{
                                 base: "bg-gradient-to-br from-[#FFB457] to-[#FF705B]",
                             }}
-                            src={`/${credential.site?.icon}`}
                             name={credential.site?.name || "N/A"}
                             size="md"
                         />
@@ -178,6 +178,21 @@ const CredentialTable = ({ dataColumns, data, selectedCredential, onCredentialSe
         ],
     }
 
+    const OnCredentialSelected = useCallback( (selected: 'all' | Set<Key>) => {
+        if (selected === 'all') { return }
+
+        // If set is empty, call onCredentialSelect with current selectedCredential
+        if (selected.size === 0 && selectedCredential) {
+            onCredentialSelect(selectedCredential);
+            return;
+        }
+
+        const newSelectedCredential = data.find(credential => credential.id === Array.from(selected)[0]);
+        if (newSelectedCredential) {
+            onCredentialSelect(newSelectedCredential);
+        }
+    },[selectedCredential])
+
     return (
         <div className="mx-4 py-2 overflow-hidden h-full flex">
             <Table
@@ -186,11 +201,13 @@ const CredentialTable = ({ dataColumns, data, selectedCredential, onCredentialSe
                 bottomContent={bottomContent}
                 bottomContentPlacement="outside"
                 classNames={classNames}
-                selectionMode="none"
+                selectionBehavior={"replace"}
+                selectionMode="single"
                 sortDescriptor={sortDescriptor}
                 topContent={topContent}
                 topContentPlacement="outside"
                 onSortChange={setSortDescriptor}
+                onSelectionChange={OnCredentialSelected}
             >
                 <TableHeader columns={dataColumns}>
                     {(column) => (
@@ -205,10 +222,8 @@ const CredentialTable = ({ dataColumns, data, selectedCredential, onCredentialSe
                 </TableHeader>
                 <TableBody emptyContent={"No records found"} items={sortedItems}>
                     {(item) => (
-                        <TableRow onClick={() => onCredentialSelect(item)} key={item.id} className={`transition-all duration-1000 ease-in-out transform ${selectedCredential?.id === item.id ? 'translate-x-4' : 'translate-x-0'}`}>
-                            {(columnKey) => <TableCell
-                                className={`${selectedCredential?.id === item.id ? '' : 'last:rounded-r-xl'}`}
-                            >
+                        <TableRow>
+                            {(columnKey) => <TableCell className={`${selectedCredential?.id === item.id ? '' : 'last:rounded-r-xl'}`}>
                                 {/* @ts-ignore*/ }
                                 {renderCell(item, columnKey)}
                             </TableCell>}
