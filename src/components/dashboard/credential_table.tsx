@@ -167,34 +167,27 @@ const CredentialTable = ({dataColumns, data, selectedCredential, onCredentialSel
     const classNames = {
         wrapper: ["bg-neutral-100 h-full rounded-lg overflow-x-hidden shadow-none p-0"],
         th: ["bg-neutral-500", "text-secondary-500", "border-b", "last:text-end", "[&:nth-child(2)]:text-center"],
-        tr: ["hover:bg-neutral-500 border-b-1 cursor-pointer", "data-[selected=true]:bg-primary-500 data-[selected=true]:transition-color data-[selected=true]:duration-5000 data-[selected=true]:ease-in-out"],
-        td: [
-            "first:rounded-l-xl",
-            // first
-            "group-data-[first=true]:first:before:rounded-none",
-            "group-data-[first=true]:last:before:rounded-none",
-            // middle
-            "group-data-[middle=true]:before:rounded-none",
-            // last
-            "group-data-[last=true]:first:before:rounded-none",
-            "group-data-[last=true]:last:before:rounded-none",
-        ],
+        tr: ["hover:bg-neutral-500", "border-b-1", "cursor-pointer", "data-[selected=true]:bg-primary-500", "data-[selected=true]:transition-color", "data-[selected=true]:duration-5000", "data-[selected=true]:ease-in-out"],
+        td: ["first:rounded-l-xl", "last:rounded-r-xl",],
     }
 
-    const OnCredentialSelected = useCallback( (selected: 'all' | Set<Key>) => {
+    const onSelectCredential = useCallback( (selected: 'all' | Set<Key>) => {
+        console.log(selected);
         if (selected === 'all') { return }
 
         // If set is empty, call onCredentialSelect with current selectedCredential
         if (selected.size === 0 && selectedCredential) {
+            console.log("No new selection");
             onCredentialSelect(selectedCredential);
             return;
         }
 
         const newSelectedCredential = data.find(credential => credential.id === Array.from(selected)[0]);
         if (newSelectedCredential) {
+            console.log("New selection", newSelectedCredential);
             onCredentialSelect(newSelectedCredential);
         }
-    },[selectedCredential])
+    },[selectedCredential, data, onCredentialSelect])
 
     return (
         <div className="mx-4 py-2 overflow-hidden h-full flex">
@@ -212,7 +205,7 @@ const CredentialTable = ({dataColumns, data, selectedCredential, onCredentialSel
                 topContent={topContent}
                 topContentPlacement="outside"
                 onSortChange={setSortDescriptor}
-                onSelectionChange={OnCredentialSelected}
+                onSelectionChange={onSelectCredential}
             >
                 <TableHeader columns={dataColumns}>
                     {(column) => (
@@ -228,8 +221,7 @@ const CredentialTable = ({dataColumns, data, selectedCredential, onCredentialSel
                 <TableBody emptyContent={"No records found"} items={sortedItems}>
                     {(item) => (
                         <TableRow>
-                            {(columnKey) => <TableCell
-                                className={`${selectedCredential?.id === item.id ? '' : 'last:rounded-r-xl'}`}>
+                            {(columnKey) => <TableCell>
                                 {/* @ts-ignore*/}
                                 {renderCell(item, columnKey)}
                             </TableCell>}

@@ -23,6 +23,7 @@ export default function Dashboard() {
     const [credentials, setCredentials] = useState<CredentialEntry[]>([])
     const { httpRequest, isLoading, error } = useHttp();
     const [createCredentialModalOpen, setCreateCredentialModalOpen] = useState(false);
+    const [credentialModalMode, setCredentialModalMode] = useState(DetailPanelMode.View);
 
     const fetchData = useCallback(() => {
         console.log("Session: ", session);
@@ -54,7 +55,9 @@ export default function Dashboard() {
     }, [session?.user, fetchData]);
 
     const onSelectedCredential = (credential: CredentialEntry) => {
+        console.log("Selected credential: ", credential);
         setSelectedCredential((prevState) => {
+            setCredentialModalMode(DetailPanelMode.View);
             // If selected credential is the same as the one clicked, then deselect it
             if (prevState && prevState.id === credential.id) {
                 return null;
@@ -107,7 +110,16 @@ export default function Dashboard() {
 
     const toggleCreateCredentialModal = () => {
         setSelectedCredential(null);
-        setCreateCredentialModalOpen(prev => !prev);
+        // If modal is closed, open it and set mode to create using the previous state
+        setCreateCredentialModalOpen((prevState) => {
+            if (!prevState) {
+                setCredentialModalMode(DetailPanelMode.Create);
+                return true;
+            } else {
+                setCredentialModalMode(DetailPanelMode.View);
+                return false;
+            }
+        })
     };
 
     // If the user is not logged in, show the login modal
@@ -144,7 +156,7 @@ export default function Dashboard() {
                 onCreateNewCredential={toggleCreateCredentialModal}
             />
             <div className="flex h-full justify-between m-2 border-2 rounded-2xl bg-neutral-100">
-                <div className={`transition-width duration-300 ease-in-out ${selectedCredential || createCredentialModalOpen ? 'w-2/3' : 'w-full'}  h-full rounded-2xl ${createCredentialModalOpen ? "blur-sm select-none pointer-events-none" : ""}`}>
+                <div className={`transition-width duration-300 ease-in-out ${selectedCredential || createCredentialModalOpen ? 'w-3/4' : 'w-full'}  h-full rounded-2xl ${createCredentialModalOpen ? "blur-sm select-none pointer-events-none" : ""}`}>
                     <CredentialTable
                         dataColumns={columns}
                         data={credentials}
@@ -152,11 +164,11 @@ export default function Dashboard() {
                         onCredentialSelect={onSelectedCredential}
                     />
                 </div>
-                <div className={`relative right-0 0 transition-all duration-200 ease-in-out ${selectedCredential || createCredentialModalOpen ? "w-1/3 m-4 ml-0 " : "w-0"}  rounded-2xl`}>
+                <div className={`relative right-0 0 transition-width duration-[500ms] ease-in-out border-primary-500 w-0 ${selectedCredential || createCredentialModalOpen ? "w-1/4" : "border-8 rounded-r-2xl"}`}>
                     {/* Details for a selected credential */}
                     <CredentialDetails
                         credential={selectedCredential}
-                        mode={selectedCredential ? DetailPanelMode.View : DetailPanelMode.Create}
+                        mode={credentialModalMode}
                         onCancel={() => setCreateCredentialModalOpen(false)}
                         onSave={onCredentialSave}
                     />
