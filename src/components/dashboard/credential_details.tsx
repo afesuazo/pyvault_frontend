@@ -67,6 +67,7 @@ const CredentialDetails = ({mode, credential, onSave, onCancel} : CredentialDeta
             "text-black/90 dark:text-white/90",
             "placeholder:text-default-700/50 dark:placeholder:text-white/60",
         ],
+        inputWrapper: "bg-neutral-200 my-1 group-data-[focus=true]:bg-neutral-200 data-[hover=true]:bg-neutral-200",
     }
 
     return (
@@ -125,7 +126,7 @@ const CredentialDetails = ({mode, credential, onSave, onCancel} : CredentialDeta
             <div className="flex flex-col p-2 grow">
 
                 {/* Credential Details */}
-                <div className="flex flex-col border-b m-4">
+                <div className="flex flex-col pb-10 border-b m-4 mb-0">
 
                     <Input
                         classNames={classNames}
@@ -156,6 +157,7 @@ const CredentialDetails = ({mode, credential, onSave, onCancel} : CredentialDeta
                         type={"password"}
                         labelPlacement={"outside-left"}
                         name="password"
+                        className={"mb-6"}
                         value={formData.password}
                         fullWidth={true}
                         onChange={handleChange}
@@ -165,7 +167,6 @@ const CredentialDetails = ({mode, credential, onSave, onCancel} : CredentialDeta
                     {mode === DetailPanelMode.View &&
                         <Input
                             classNames={classNames}
-                            className="mt-6"
                             label="Last Modified"
                             labelPlacement={"outside-left"}
                             name="modified_at"
@@ -179,11 +180,13 @@ const CredentialDetails = ({mode, credential, onSave, onCancel} : CredentialDeta
                     <Textarea
                         label="Notes"
                         name="notes"
-                        minRows={1}
-                        maxRows={2}
+                        minRows={2}
+                        maxRows={3}
                         classNames={{
                             base: "items-start",
                             label: "min-w-[100px] mr-4 text-right",
+                            inputWrapper: "bg-neutral-200 my-1 group-data-[focus=true]:bg-neutral-200 data-[hover=true]:bg-neutral-200",
+
                         }}
                         cacheMeasurements={true}
                         labelPlacement={"outside-left"}
