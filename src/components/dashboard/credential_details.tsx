@@ -1,7 +1,7 @@
-import {StarIcon, XCircleIcon, DocumentCheckIcon, PencilIcon} from "@heroicons/react/16/solid";
+import {StarIcon, XCircleIcon, TrashIcon, DocumentCheckIcon, ChevronUpDownIcon, PencilIcon} from "@heroicons/react/16/solid";
 import {Fragment, useEffect, useState} from "react";
 import {CredentialDetailsProps, CredentialEntry, DetailPanelMode} from "@/interfaces";
-import {Link, Input, Button, Avatar, Tooltip} from "@nextui-org/react";
+import {Link, Input, Button, Avatar, Tooltip, Card, CardBody, Image} from "@nextui-org/react";
 import {Textarea} from "@nextui-org/input";
 
 
@@ -99,7 +99,7 @@ const CredentialDetails = ({mode, credential, onSave, onCancel} : CredentialDeta
                             </Tooltip>
                             <Tooltip content="Delete">
                                 <Button size={"sm"} isIconOnly className="text-primary-500 hover:text-gray-200 rounded">
-                                    <XCircleIcon/>
+                                    <TrashIcon/>
                                 </Button>
                             </Tooltip>
                         </Fragment>
@@ -199,20 +199,54 @@ const CredentialDetails = ({mode, credential, onSave, onCancel} : CredentialDeta
                 </div>
 
                 {/* Site Details */}
-                <div className="flex items-center space-x-4 my-6 px-6">
-                    <Avatar
-                        showFallback
-                        classNames={{
-                            base: "bg-gradient-to-br from-[#FFB457] to-[#FF705B] w-16 h-16",
-                        }}
-                        name={credential?.site?.name || "N/A"}
-                    />
-                    <div>
-                        <h2 className="text-xl font-bold">{credential?.site?.name}</h2>
-                        <Link href={credential?.site?.url || "#"} target="_blank">{credential?.site?.url}</Link>
-                    </div>
-                </div>
+                <Card
+                    isBlurred
+                    className="flex mt-6 border-none bg-background/60 dark:bg-default-100/50"
+                    shadow="sm"
+                >
+                    <CardBody>
+                        <div className="flex gap-4">
 
+                            {/* Site Logo */}
+                            <Avatar
+                                showFallback
+                                radius="lg"
+                                classNames={{
+                                    base: "bg-gradient-to-br from-[#FFB457] to-[#FF705B] w-20 h-20",
+                                }}
+                                name={credential?.site?.name || "N/A"}
+                            />
+
+                            <div className="flex flex-col flex-grow space-y-0">
+
+                                {/* Action Buttons + Name */}
+                                <div className="flex justify-between">
+                                    <h2 className="mt-4 text-xl font-bold">{credential?.site?.name || "Temp Name"}</h2>
+                                    <Button
+                                        isIconOnly
+                                        className="w-6 h-6 text-amber-500 data-[hover]:text-neutral-500 -translate-y-1 translate-x-2"
+                                        radius="full"
+                                        variant="light"
+                                        onPress={() => {
+                                        }}
+                                    >
+                                        <ChevronUpDownIcon
+                                            className={`w-6 h-6 ${true ? "[&>path]:stroke-transparent" : ""}`}
+                                            fill={true ? "currentColor" : "none"}
+                                        />
+                                    </Button>
+                                </div>
+
+                                {/* Site Details */}
+                                <Link isBlock color="primary" isExternal showAnchorIcon
+                                      className={`pt-0`}
+                                      href={credential?.site?.url || "#"} target="_blank">
+                                    {credential?.site?.url || "Temp URL"}
+                                </Link>
+                            </div>
+                        </div>
+                    </CardBody>
+                </Card>
             </div>
 
         </form>
