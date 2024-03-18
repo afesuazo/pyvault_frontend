@@ -59,7 +59,6 @@ const config: Config = {
                 light: {
                     colors: {
                         default: 'var(--primary-color-500)',
-
                     }
                 }
             }

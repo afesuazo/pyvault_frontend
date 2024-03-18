@@ -54,6 +54,7 @@ const CredentialTable = ({dataColumns, data, selectedCredential, onCredentialSel
                     <div className="flex items-center space-x-2 bg-purpl">
                         <Avatar
                             showFallback
+                            radius="lg"
                             classNames={{
                                 base: "bg-gradient-to-br from-[#FFB457] to-[#FF705B]",
                             }}
@@ -165,10 +166,10 @@ const CredentialTable = ({dataColumns, data, selectedCredential, onCredentialSel
     }, [items.length, page, pages]);
 
     const classNames = {
-        wrapper: ["bg-neutral-100 h-full rounded-lg overflow-x-hidden shadow-none p-0"],
-        th: ["bg-neutral-500", "text-secondary-500", "border-b", "last:text-end", "[&:nth-child(2)]:text-center"],
-        tr: ["hover:bg-neutral-500", "border-b-1", "cursor-pointer", "data-[selected=true]:bg-primary-500", "data-[selected=true]:transition-color", "data-[selected=true]:duration-5000", "data-[selected=true]:ease-in-out"],
-        td: ["first:rounded-l-xl", "last:rounded-r-xl",],
+        wrapper: ["bg-neutral-100 h-full rounded-md overflow-x-hidden shadow-none p-0"],
+        th: ["bg-neutral-500", "text-secondary-500", "last:text-end", "[&:nth-child(2)]:text-center"],
+        tr: ["hover:bg-neutral-500", "border-b-1", "cursor-pointer", "data-[hover=true]:border-b-0", "data-[selected=true]:bg-primary-500", "data-[selected=true]:transition-color", "data-[selected=true]:duration-5000", "data-[selected=true]:ease-in-out"],
+        td: ["first:rounded-l-md", "last:rounded-r-md",],
     }
 
     const onSelectCredential = useCallback( (selected: 'all' | Set<Key>) => {
