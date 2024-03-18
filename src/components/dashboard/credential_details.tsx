@@ -221,7 +221,7 @@ const CredentialDetails = ({mode, credential, onSave, onCancel} : CredentialDeta
 
                                 {/* Action Buttons + Name */}
                                 <div className="flex justify-between">
-                                    <h2 className="mt-4 text-xl font-bold">{credential?.site?.name || "Temp Name"}</h2>
+                                    <h2 className="mt-4 text-xl font-bold">{credential?.site?.name || ""}</h2>
                                     <Button
                                         isIconOnly
                                         className="w-6 h-6 text-amber-500 data-[hover]:text-neutral-500 -translate-y-1 translate-x-2"
@@ -238,11 +238,26 @@ const CredentialDetails = ({mode, credential, onSave, onCancel} : CredentialDeta
                                 </div>
 
                                 {/* Site Details */}
-                                <Link isBlock color="primary" isExternal showAnchorIcon
-                                      className={`pt-0`}
-                                      href={credential?.site?.url || "#"} target="_blank">
-                                    {credential?.site?.url || "Temp URL"}
-                                </Link>
+                                { credential?.site ? (
+                                    <Link
+                                        isBlock
+                                        color="primary"
+                                        isExternal
+                                        showAnchorIcon
+                                        className={`pt-0`}
+                                        href={credential?.site?.url || "#"}
+                                        target="_blank"
+                                    >
+                                        {credential?.site?.url || "Temp URL"}
+                                    </Link>
+                                ) : (
+                                    <p
+                                        className={`text-lg font-bold text-center pr-5 text-gray-500 dark:text-white/60`}
+                                    >
+                                        No Linked Site
+                                    </p>
+                                )}
+
                             </div>
                         </div>
                     </CardBody>
