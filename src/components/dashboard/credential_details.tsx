@@ -61,6 +61,7 @@ const CredentialDetails = ({mode, credential, onSave, onCancel} : CredentialDeta
     }
 
     const classNames = {
+        mainWrapper: "w-full",
         label: "min-w-[100px] mr-4 text-right",
         input: [
             "bg-transparent",
