@@ -13,7 +13,7 @@ import {
     Button
 } from "@nextui-org/react";
 import {PlusIcon, LockClosedIcon} from "@heroicons/react/16/solid";
-import {useSession} from "next-auth/react";
+import {useSession, signOut} from "next-auth/react";
 import {NavbarProps} from "@/interfaces";
 
 export default function TopNavbar( {onCreateNewCredential}: NavbarProps ) {
@@ -58,6 +58,7 @@ export default function TopNavbar( {onCreateNewCredential}: NavbarProps ) {
                         <DropdownItem
                             key="logout"
                             startContent={<LockClosedIcon className={"w-4 h-4"} />}
+                            onClick={() => signOut()}
                         >
                             Log Out
                         </DropdownItem>

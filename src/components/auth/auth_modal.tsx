@@ -1,14 +1,14 @@
 "use client";
 
 import {Modal, ModalBody, ModalHeader, ModalContent, ModalFooter} from "@nextui-org/modal";
-import {Button, Checkbox, Input} from "@nextui-org/react";
-import {MailIcon, Lock} from "@nextui-org/shared-icons";
+import {Button, Checkbox, Divider, Input} from "@nextui-org/react";
+import {MailIcon, LockFilledIcon} from "@nextui-org/shared-icons";
 import Link from "next/link";
-import { signIn, signOut } from "next-auth/react";
+import {signIn, signOut} from "next-auth/react";
 import {useState} from "react";
 import {AuthModalProps} from "@/interfaces";
 
-export const AuthModal = ({isOpen, onClose} : AuthModalProps) => {
+export const AuthModal = ({isOpen, onClose}: AuthModalProps) => {
 
     const [enteredUsername, setEnteredUsername] = useState('')
     const [enteredPassword, setEnteredPassword] = useState('')
@@ -16,7 +16,9 @@ export const AuthModal = ({isOpen, onClose} : AuthModalProps) => {
 
     if (!isOpen) return null;
 
-    const loginHandler = async () => {
+    const loginHandler = async (event: any) => {
+        event.preventDefault();
+
         const result = await signIn('login', {
             redirect: false,
             username: enteredUsername,
@@ -32,7 +34,7 @@ export const AuthModal = ({isOpen, onClose} : AuthModalProps) => {
             setErrorMessage(result.error)
         }
 
-        if(result.ok) {
+        if (result.ok) {
             onClose()
         }
     }
@@ -44,49 +46,49 @@ export const AuthModal = ({isOpen, onClose} : AuthModalProps) => {
             placement="top-center"
             isDismissable={false}
             hideCloseButton={true}
+            classNames={{
+                body: "px-20"
+            }}
         >
-            <ModalContent>
-                <ModalHeader className="flex flex-col text-center gap-1">Log in</ModalHeader>
-                <ModalBody>
-                    <Input
-                        autoFocus
-                        endContent={
-                            <MailIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
-                        }
-                        label="Email"
-                        placeholder="Enter your email"
-                        variant="bordered"
-                        onChange={(e) => setEnteredUsername(e.target.value)}
-                    />
-                    <Input
-                        endContent={
-                            <Lock className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
-                        }
-                        label="Password"
-                        placeholder="Enter your password"
-                        type="password"
-                        variant="bordered"
-                        onChange={(e) => setEnteredPassword(e.target.value)}
-                    />
-                    <div className="flex py-2 px-1 justify-between">
-                        <Checkbox
-                            classNames={{
-                                label: "text-small",
-                            }}
-                        >
-                            Remember me
-                        </Checkbox>
-                        <Link color="primary" href="#" >
-                            Forgot password?
-                        </Link>
-                    </div>
-                </ModalBody>
-                <ModalFooter>
-                    <Button className="bg-primary-500" onPress={loginHandler}>
-                        Sign in
-                    </Button>
-                </ModalFooter>
-            </ModalContent>
+            <form onSubmit={loginHandler}>
+                <ModalContent>
+                    <ModalHeader className="my-6 flex flex-col text-center text-3xl gap-1">Log in</ModalHeader>
+                    <ModalBody>
+                        <Input
+                            autoFocus
+                            startContent={
+                                <MailIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0"/>
+                            }
+                            placeholder="Enter your username"
+                            variant="underlined"
+                            onChange={(e) => setEnteredUsername(e.target.value)}
+                        />
+                        <Input
+                            startContent={
+                                <LockFilledIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0"/>
+                            }
+                            placeholder="Enter your password"
+                            type="password"
+                            className={`mt-4`}
+                            variant="underlined"
+                            onChange={(e) => setEnteredPassword(e.target.value)}
+                        />
+                        <Divider/>
+                        <Button className="bg-primary-500 my-4" size={`lg`} type="submit">
+                            Sign in
+                        </Button>
+                        <Divider/>
+                    </ModalBody>
+                    <ModalFooter className={`flex text-center justify-center`}>
+                        <p>
+                            Don't have an account?{" "}
+                        </p>
+                        <p className={`text-primary-500 cursor-pointer hover:text-neutral-500`} onClick={() => {console.log("Sign in")}}>
+                           Sign up
+                        </p>
+                    </ModalFooter>
+                </ModalContent>
+            </form>
         </Modal>
     )
 }
