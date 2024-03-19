@@ -1,6 +1,6 @@
 "use client";
 
-import {useCallback, useEffect, useMemo, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import CredentialTable from "@/components/dashboard/credential_table";
 import CredentialDetails from "@/components/dashboard/credential_details";
 import TopNavbar from "@/components/navigation/navbar";
@@ -38,7 +38,7 @@ export default function Dashboard() {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${session?.accessToken}`,
             }
-        }, applyData).then(r => {});
+        }, applyData).then();
 
         if (error) {
             console.error("Error log: ", error);
