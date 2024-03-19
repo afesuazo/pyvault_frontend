@@ -46,7 +46,7 @@ export default function Dashboard() {
             console.error("Error log: ", error);
         }
 
-    }, [httpRequest]);
+    }, [httpRequest, session?.user]);
 
     useEffect(() => {
         if (session?.user) {
