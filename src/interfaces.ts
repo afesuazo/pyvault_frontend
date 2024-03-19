@@ -35,7 +35,7 @@ export interface CredentialEntry {
     email: string;
     created_at: string;
     modified_at: string;
-    password: string;
+    encrypted_password: string;
     category: string;
     favorite: boolean;
     notes: string;

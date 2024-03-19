@@ -8,12 +8,6 @@ export default async function DashboardLayout({children}: {
 
     const session = await auth()
 
-    // Used to reduce data shown in session
-    // if (session?.user) {
-    //     session.user = {
-    //         name: session.user.name,
-    // }
-
     return (
         <SessionProvider session={session}>
             {children}

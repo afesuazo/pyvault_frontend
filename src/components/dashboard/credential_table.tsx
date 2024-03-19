@@ -173,19 +173,16 @@ const CredentialTable = ({dataColumns, data, selectedCredential, onCredentialSel
     }
 
     const onSelectCredential = useCallback( (selected: 'all' | Set<Key>) => {
-        console.log(selected);
         if (selected === 'all') { return }
 
         // If set is empty, call onCredentialSelect with current selectedCredential
         if (selected.size === 0 && selectedCredential) {
-            console.log("No new selection");
             onCredentialSelect(selectedCredential);
             return;
         }
 
         const newSelectedCredential = data.find(credential => credential.id === Array.from(selected)[0]);
         if (newSelectedCredential) {
-            console.log("New selection", newSelectedCredential);
             onCredentialSelect(newSelectedCredential);
         }
     },[selectedCredential, data, onCredentialSelect])
