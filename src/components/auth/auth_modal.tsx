@@ -1,9 +1,8 @@
 "use client";
 
 import {Modal, ModalBody, ModalHeader, ModalContent, ModalFooter} from "@nextui-org/modal";
-import {Button, Checkbox, Divider, Input} from "@nextui-org/react";
+import {Button, Divider, Input} from "@nextui-org/react";
 import {MailIcon, LockFilledIcon} from "@nextui-org/shared-icons";
-import Link from "next/link";
 import {signIn, signOut} from "next-auth/react";
 import {useState} from "react";
 import {AuthModalProps} from "@/interfaces";
