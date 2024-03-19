@@ -55,7 +55,6 @@ export default function Dashboard() {
     }, [session?.user, fetchData]);
 
     const onSelectedCredential = (credential: CredentialEntry) => {
-        console.log("Selected credential: ", credential);
         setSelectedCredential((prevState) => {
             setCredentialModalMode(DetailPanelMode.View);
             // If selected credential is the same as the one clicked, then deselect it
@@ -70,6 +69,7 @@ export default function Dashboard() {
         const saveCredential = async () => {
             const applyData = (savedData: any) => {
                 // Add the saved credential to the list of credentials
+                console.log("Saved data: ", savedData);
                 setCredentials(prevState => [...prevState, savedData]);
             };
 
@@ -77,7 +77,7 @@ export default function Dashboard() {
                 nickname: data.nickname,
                 email: data.email,
                 username: data.username,
-                encrypted_password: data.password,
+                encrypted_password: data.encrypted_password,
                 favorite: data.favorite,
                 site_id: data.site?.id,
                 user_id: 0,

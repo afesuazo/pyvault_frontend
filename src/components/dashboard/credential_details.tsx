@@ -15,7 +15,7 @@ const CredentialDetails = ({mode, credential, onSave, onCancel} : CredentialDeta
         email: '',
         created_at: '',
         modified_at: '',
-        password: '',
+        encrypted_password: '',
         category: '',
         favorite: false,
         notes: '',
@@ -155,11 +155,11 @@ const CredentialDetails = ({mode, credential, onSave, onCancel} : CredentialDeta
                         classNames={classNames}
                         label="Password"
                         // type={isVisible ? "text" : "password"}
-                        type={"password"}
+                        type={"text"}
                         labelPlacement={"outside-left"}
-                        name="password"
+                        name="encrypted_password"
                         className={"mb-6"}
-                        value={formData.password}
+                        value={formData.encrypted_password}
                         fullWidth={true}
                         onChange={handleChange}
                         readOnly={mode === 'view'}
