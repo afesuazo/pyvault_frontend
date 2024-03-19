@@ -5,7 +5,7 @@ import {Link, Input, Button, Avatar, Tooltip, Card, CardBody, Image} from "@next
 import {Textarea} from "@nextui-org/input";
 
 
-const CredentialDetails = ({mode, credential, onSave, onCancel} : CredentialDetailsProps ) => {
+const CredentialDetails = ({mode, credential, onSave, onCancel, onDelete} : CredentialDetailsProps ) => {
 
     const emptyFormData: CredentialEntry = {
         id: 0,
@@ -42,9 +42,12 @@ const CredentialDetails = ({mode, credential, onSave, onCancel} : CredentialDeta
         onSave(formData);
     }
 
-    const onCanceled = (event: any) => {
-        event.preventDefault();
+    const onCanceled = () => {
         onCancel();
+    }
+
+    const onDeleted = () => {
+        onDelete(formData);
     }
 
     const handleChange = (event: any) => {
@@ -99,7 +102,7 @@ const CredentialDetails = ({mode, credential, onSave, onCancel} : CredentialDeta
                                 </Button>
                             </Tooltip>
                             <Tooltip content="Delete">
-                                <Button size={"sm"} isIconOnly className="text-primary-500 hover:text-gray-200 rounded">
+                                <Button size={"sm"} onPress={onDeleted} isIconOnly className="text-primary-500 hover:text-gray-200 rounded">
                                     <TrashIcon/>
                                 </Button>
                             </Tooltip>

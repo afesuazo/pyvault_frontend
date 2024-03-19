@@ -1,6 +1,6 @@
 "use client";
 
-import {useCallback, useEffect, useMemo, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import CredentialTable from "@/components/dashboard/credential_table";
 import CredentialDetails from "@/components/dashboard/credential_details";
 import TopNavbar from "@/components/navigation/navbar";
@@ -26,8 +26,6 @@ export default function Dashboard() {
     const [credentialModalMode, setCredentialModalMode] = useState(DetailPanelMode.View);
 
     const fetchData = useCallback(() => {
-        console.log("Session: ", session);
-
         const applyData = (data: any) => {
             // Credential data received by the backend
             // Check fields and transform them if necessary
@@ -40,7 +38,7 @@ export default function Dashboard() {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${session?.accessToken}`,
             }
-        }, applyData).then(r => {});
+        }, applyData).then();
 
         if (error) {
             console.error("Error log: ", error);
@@ -108,6 +106,39 @@ export default function Dashboard() {
         }
     }
 
+    const onCredentialDelete = async (data: CredentialEntry) => {
+        const deleteCredential = async () => {
+            const applyData = () => {
+                // Remove the credential from the list of credentials
+                setCredentials(prevState => prevState.filter(cred => cred.id !== data.id));
+            };
+
+            await httpRequest({
+                url: `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/credentials/${data.id}`,
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${session?.accessToken}`,
+                },
+            }, applyData);
+
+            if (error) {
+                console.error("Error log: ", error);
+            }
+
+        };
+
+        try {
+            await deleteCredential();
+            setCreateCredentialModalOpen(false);
+            setSelectedCredential(null);
+        }
+        catch (error) {
+            console.error("Error saving credential", error);
+        }
+    }
+
+
     const toggleCreateCredentialModal = () => {
         setSelectedCredential(null);
         // If modal is closed, open it and set mode to create using the previous state
@@ -171,6 +202,7 @@ export default function Dashboard() {
                         mode={credentialModalMode}
                         onCancel={() => setCreateCredentialModalOpen(false)}
                         onSave={onCredentialSave}
+                        onDelete={onCredentialDelete}
                     />
                 </div>
             </div>

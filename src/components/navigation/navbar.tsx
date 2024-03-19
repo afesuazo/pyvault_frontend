@@ -12,7 +12,7 @@ import {
     Avatar,
     Button
 } from "@nextui-org/react";
-import {PlusIcon, LockClosedIcon} from "@heroicons/react/16/solid";
+import {PlusIcon, LockClosedIcon} from "@heroicons/react/24/outline";
 import {useSession, signOut} from "next-auth/react";
 import {NavbarProps} from "@/interfaces";
 
@@ -35,10 +35,10 @@ export default function TopNavbar( {onCreateNewCredential}: NavbarProps ) {
             <NavbarContent as="div" justify="end">
                 <NavbarItem>
                     <Button
-                        className={"bg-primary-500 px-6 text-center"}
+                        className={"bg-primary-500 px-3 text-center"}
                         disableRipple={true}
                         onClick={onCreateNewCredential}
-                        endContent={<PlusIcon className={"w-[24px] h-[24px] text-black"}/>}>
+                        endContent={<PlusIcon className={"w-[24px] h-[24px]"}/>}>
                         Add New
                     </Button>
                 </NavbarItem>
@@ -47,8 +47,9 @@ export default function TopNavbar( {onCreateNewCredential}: NavbarProps ) {
                         <Avatar
                             isBordered
                             as="button"
-                            className="transition-transform"
-                            name={session.user.name ? session.user.name.toUpperCase() : "User"}
+                            classNames={{
+                                base: "bg-gradient-to-br from-[#A0B6C4] to-[#7B8D9F], border-2 border-[#7d888d]",
+                            }}                            name={session.user.name ? session.user.name.toUpperCase() : "User"}
                             size="md"
                         />
                     </DropdownTrigger>

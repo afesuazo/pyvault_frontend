@@ -60,6 +60,7 @@ export interface CredentialDetailsProps {
     credential: CredentialEntry | null,
     onSave: (credential: CredentialEntry) => void;
     onCancel: () => void;
+    onDelete: (credential: CredentialEntry) => void;
 }
 
 export interface NavbarProps {
