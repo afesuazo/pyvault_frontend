@@ -3,12 +3,10 @@ import {
     XCircleIcon,
     TrashIcon,
     DocumentCheckIcon,
-    ChevronUpDownIcon,
     PencilIcon,
-    PlusIcon
 } from "@heroicons/react/16/solid";
 import {Fragment, useEffect, useState} from "react";
-import {CredentialDetailsProps, CredentialEntry, DetailPanelMode} from "@/interfaces";
+import {CredentialDetailsProps, CredentialEntry, DetailPanelMode, Site, SiteFieldProps} from "@/interfaces";
 import {
     Link,
     Input,
@@ -17,22 +15,14 @@ import {
     Tooltip,
     Card,
     CardBody,
-    Image,
-    DropdownTrigger,
-    Dropdown,
-    DropdownMenu,
     Autocomplete,
-    AutocompleteItem,
-    DropdownItem,
-    DropdownSection,
-    Popover,
-    PopoverTrigger,
-    PopoverContent
+    AutocompleteItem
 } from "@nextui-org/react";
 import {Textarea} from "@nextui-org/input";
+import {useFilter} from "@react-aria/i18n";
 
 
-const CredentialDetails = ({mode, credential, onSave, onCancel, onDelete}: CredentialDetailsProps) => {
+const CredentialDetails = ({availableSites, mode, credential, onSave, onCancel, onDelete}: CredentialDetailsProps) => {
 
     const emptyFormData: CredentialEntry = {
         id: 0,
@@ -49,6 +39,7 @@ const CredentialDetails = ({mode, credential, onSave, onCancel, onDelete}: Crede
     };
 
     const [formData, setFormData] = useState<CredentialEntry>(emptyFormData);
+    const [value, setValue] = useState(credential?.site?.id || "");
 
     useEffect(() => {
         if (mode === DetailPanelMode.Create) {
@@ -84,6 +75,15 @@ const CredentialDetails = ({mode, credential, onSave, onCancel, onDelete}: Crede
             [name]: type === 'checkbox' ? checked : value,
         }));
     };
+
+    const handleSiteChange = (value: any) => {
+        setValue(value);
+        let site = availableSites.find((site) => site.id == value);
+        setFormData((prevData) => ({
+            ...prevData,
+            site: site || null,
+        }));
+    }
 
     // Nothing to render when no credential is selected
     if (!credential && mode !== DetailPanelMode.Create) {
@@ -239,18 +239,29 @@ const CredentialDetails = ({mode, credential, onSave, onCancel, onDelete}: Crede
                     shadow="sm"
                 >
                     <CardBody>
-                        <div className="flex gap-4">
+                        <div className="flex gap-6">
 
-                            {/* Site Logo */}
-                            <Avatar
-                                showFallback
-                                radius="lg"
-                                classNames={{
-                                    base: "bg-gradient-to-br from-[#FFB457] to-[#FF705B] w-20 h-20",
-                                }}
-                                name={credential?.site?.name || "N/A"}
-                                src={""}
-                            />
+                            { mode === DetailPanelMode.View ? (
+                                <Avatar
+                                    showFallback
+                                    radius="lg"
+                                    classNames={{
+                                        base: "bg-gradient-to-br from-[#FFB457] to-[#FF705B] w-20 h-20"
+                                    }}
+                                    name={credential?.site?.name || "N/A"}
+                                    src={credential?.site?.icon}
+                                />
+                                ) : (
+                                    <Avatar
+                                        showFallback
+                                        radius="lg"
+                                        classNames={{
+                                            base: "bg-gradient-to-br from-[#FFB457] to-[#FF705B] w-20 h-20",
+                                        }}
+                                        name={formData.site?.name || "N/A"}
+                                        src={formData.site?.icon}
+                                    />
+                            )}
 
                             <div className="flex flex-col flex-grow justify-center space-y-0">
 
@@ -258,17 +269,17 @@ const CredentialDetails = ({mode, credential, onSave, onCancel, onDelete}: Crede
                                 {mode === DetailPanelMode.View ? (
                                         credential?.site ? (
                                             <Fragment>
-                                                <h2 className="mt-4 text-xl font-bold">{credential.site.name || ""}</h2>
+                                                <h2 className="text-xl font-bold">{credential.site.name}</h2>
                                                 <Link
                                                     isBlock
                                                     color="primary"
                                                     isExternal
                                                     showAnchorIcon
-                                                    className={`text-secondary-400 pt-0 text-sm`}
-                                                    href={credential?.site?.url || "#"}
+                                                    className={`text-secondary-400 pt-0 pl-0 text-sm`}
+                                                    href={credential?.site?.url}
                                                     target="_blank"
                                                 >
-                                                    {credential?.site?.url || "Temp URL"}
+                                                    {credential?.site?.url}
                                                 </Link>
                                             </Fragment>
                                         ) : (
@@ -279,24 +290,23 @@ const CredentialDetails = ({mode, credential, onSave, onCancel, onDelete}: Crede
                                     )
                                     : (
                                         <div>
-                                            <div className="flex justify-between mb-5">
+                                            <div className="flex justify-between">
                                                 <Autocomplete
                                                     fullWidth={true}
-                                                    inputValue={credential?.site?.name || ""}
-                                                    defaultItems={[{
-                                                        id: 1,
-                                                        name: "Site 1",
-                                                        src: "",
-                                                        url: "site.com"
-                                                    }, {id: 2, name: "Site 2", src: "", url: "site2.com"}]}
+                                                    items={availableSites}
+                                                    selectedKey={value}
                                                     placeholder="Select a site"
                                                     labelPlacement="inside"
+                                                    classNames={{
+                                                        base: "font-bold border-2 rounded-lg",
+                                                    }}
+                                                    onSelectionChange={handleSiteChange}
                                                 >
                                                     {(site) => (
                                                         <AutocompleteItem key={site.id} textValue={site.name}>
                                                             <div className="flex gap-2 items-center">
                                                                 <Avatar alt={site.name} className="flex-shrink-0"
-                                                                        size="sm" src={site.src}/>
+                                                                        size="sm" src={site.icon}/>
                                                                 <div className="flex flex-col">
                                                                     <span className="text-small">{site.name}</span>
                                                                     <span
@@ -307,15 +317,16 @@ const CredentialDetails = ({mode, credential, onSave, onCancel, onDelete}: Crede
                                                     )}
                                                 </Autocomplete>
                                             </div>
-                                            {credential?.site?.url && (
+                                            {formData.site && (
                                                 <Link
                                                     isBlock
                                                     isExternal
-                                                    className={`text-secondary-400 pt-1 text-sm`}
-                                                    href={credential?.site?.url}
+                                                    className={`text-secondary-400 pt-1 ml-1 text-sm`}
+                                                    href={formData.site.url}
+                                                    showAnchorIcon={true}
                                                     target="_blank"
                                                 >
-                                                    {credential?.site?.url}
+                                                    {formData.site.url}
                                                 </Link>
                                             )}
                                         </div>

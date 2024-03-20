@@ -56,6 +56,7 @@ export enum DetailPanelMode {
 }
 
 export interface CredentialDetailsProps {
+    availableSites: Site[];
     mode: DetailPanelMode;
     credential: CredentialEntry | null,
     onSave: (credential: CredentialEntry) => void;
@@ -77,4 +78,10 @@ export interface HttpRequestConfig {
     url: string;
     headers?: any;
     body?: any;
+}
+
+export interface SiteFieldProps {
+    selectedKey: number | null;
+    inputValue: string;
+    items: Site[];
 }
