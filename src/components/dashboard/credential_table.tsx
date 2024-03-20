@@ -35,10 +35,11 @@ const CredentialTable = ({dataColumns, data, selectedCredential, onCredentialSel
 
     const sortedItems = useMemo(() => {
         return [...filteredItems].sort((a: CredentialEntry, b: CredentialEntry) => {
+
             // @ts-ignore
-            let first = sortDescriptor.column === 'site' ? a.site?.name.toLowerCase() : a[sortDescriptor.column];
+            let first = sortDescriptor.column === 'site' ? a.site?.name || "" : a[sortDescriptor.column];
             // @ts-ignore
-            let second = sortDescriptor.column === 'site' ? b.site?.name.toLowerCase() : b[sortDescriptor.column];
+            let second = sortDescriptor.column === 'site' ? b.site?.name || "" : b[sortDescriptor.column];
 
             const cmp = first < second ? -1 : first > second ? 1 : 0;
             return sortDescriptor.direction === "descending" ? -cmp : cmp;

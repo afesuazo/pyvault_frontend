@@ -56,6 +56,7 @@ export enum DetailPanelMode {
 }
 
 export interface CredentialDetailsProps {
+    availableSites: Site[];
     mode: DetailPanelMode;
     credential: CredentialEntry | null,
     onSave: (credential: CredentialEntry) => void;

@@ -8,7 +8,7 @@ import {AuthModal} from "@/components/auth/auth_modal";
 import {useSession} from "next-auth/react";
 import {Skeleton} from "@nextui-org/react";
 import useHttp from "@/hooks/use_http";
-import {CredentialEntry, DetailPanelMode} from "@/interfaces";
+import {CredentialEntry, DetailPanelMode, Site} from "@/interfaces";
 
 const columns = [
     {label: "SITE", key: "site", sortable: true},
@@ -21,16 +21,31 @@ export default function Dashboard() {
     const { data: session } = useSession();
     const [selectedCredential, setSelectedCredential] = useState<CredentialEntry | null>(null)
     const [credentials, setCredentials] = useState<CredentialEntry[]>([])
+    const [sites, setSites] = useState<Site[]>([])
     const { httpRequest, isLoading, error } = useHttp();
     const [createCredentialModalOpen, setCreateCredentialModalOpen] = useState(false);
     const [credentialModalMode, setCredentialModalMode] = useState(DetailPanelMode.View);
 
     const fetchData = useCallback(() => {
+        const applySiteData = (data: any) => {
+            // Credential data received by the backend
+            // Check fields and transform them if necessary
+            setSites(data);
+        };
+
         const applyData = (data: any) => {
             // Credential data received by the backend
             // Check fields and transform them if necessary
             setCredentials(data);
         };
+
+        httpRequest({
+            url: `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/sites`,
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${session?.accessToken}`,
+            }
+        }, applySiteData).then();
 
         httpRequest({
             url: `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/credentials`,
@@ -138,7 +153,6 @@ export default function Dashboard() {
         }
     }
 
-
     const toggleCreateCredentialModal = () => {
         setSelectedCredential(null);
         // If modal is closed, open it and set mode to create using the previous state
@@ -198,6 +212,7 @@ export default function Dashboard() {
                 <div className={`relative right-0 0 transition-width duration-[500ms] ease-in-out border-primary-500 w-0 ${selectedCredential || createCredentialModalOpen ? "w-1/4" : "border-8 rounded-r-2xl"}`}>
                     {/* Details for a selected credential */}
                     <CredentialDetails
+                        availableSites={sites}
                         credential={selectedCredential}
                         mode={credentialModalMode}
                         onCancel={() => setCreateCredentialModalOpen(false)}
