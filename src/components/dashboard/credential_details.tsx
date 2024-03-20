@@ -248,7 +248,7 @@ const CredentialDetails = ({availableSites, mode, credential, onSave, onCancel, 
                                     showFallback
                                     radius="lg"
                                     classNames={{
-                                        base: "bg-gradient-to-br from-[#FFB457] to-[#FF705B] w-20 h-20"
+                                        base: "bg-gradient-to-br from-[#FFB457] to-[#FF705B] w-0 h-20 lg:min-w-20"
                                     }}
                                     name={credential?.site?.name || "N/A"}
                                     src={credential?.site?.icon}
