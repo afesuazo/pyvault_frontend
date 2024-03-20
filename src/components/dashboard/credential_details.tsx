@@ -19,7 +19,6 @@ import {
     AutocompleteItem
 } from "@nextui-org/react";
 import {Textarea} from "@nextui-org/input";
-import {useFilter} from "@react-aria/i18n";
 
 
 const CredentialDetails = ({availableSites, mode, credential, onSave, onCancel, onDelete}: CredentialDetailsProps) => {
@@ -239,7 +238,7 @@ const CredentialDetails = ({availableSites, mode, credential, onSave, onCancel, 
                     shadow="sm"
                 >
                     <CardBody>
-                        <div className="flex gap-6">
+                        <div className="flex lg:gap-6">
 
                             { mode === DetailPanelMode.View ? (
                                 <Avatar
@@ -256,14 +255,14 @@ const CredentialDetails = ({availableSites, mode, credential, onSave, onCancel, 
                                         showFallback
                                         radius="lg"
                                         classNames={{
-                                            base: "bg-gradient-to-br from-[#FFB457] to-[#FF705B] w-20 h-20",
+                                            base: "bg-gradient-to-br from-[#FFB457] to-[#FF705B] w-0 h-20 lg:min-w-20",
                                         }}
                                         name={formData.site?.name || "N/A"}
                                         src={formData.site?.icon}
                                     />
                             )}
 
-                            <div className="flex flex-col flex-grow justify-center space-y-0">
+                            <div className="flex flex-col flex-grow justify-center">
 
                                 {/* Action Buttons + Name */}
                                 {mode === DetailPanelMode.View ? (
@@ -290,7 +289,7 @@ const CredentialDetails = ({availableSites, mode, credential, onSave, onCancel, 
                                     )
                                     : (
                                         <div>
-                                            <div className="flex justify-between">
+                                            <div className="flex justify-between [&_input]:!font-bold [&_input]:!text-lg">
                                                 <Autocomplete
                                                     fullWidth={true}
                                                     items={availableSites}
@@ -298,19 +297,17 @@ const CredentialDetails = ({availableSites, mode, credential, onSave, onCancel, 
                                                     placeholder="Select a site"
                                                     labelPlacement="inside"
                                                     classNames={{
-                                                        base: "font-bold border-2 rounded-lg",
+                                                        base: "border-2 rounded-l",
                                                     }}
                                                     onSelectionChange={handleSiteChange}
                                                 >
                                                     {(site) => (
                                                         <AutocompleteItem key={site.id} textValue={site.name}>
                                                             <div className="flex gap-2 items-center">
-                                                                <Avatar alt={site.name} className="flex-shrink-0"
-                                                                        size="sm" src={site.icon}/>
+                                                                <Avatar alt={site.name} className="flex-shrink-0" size="sm" src={site.icon}/>
                                                                 <div className="flex flex-col">
-                                                                    <span className="text-small">{site.name}</span>
-                                                                    <span
-                                                                        className="text-tiny text-default-400">{site.url}</span>
+                                                                    <span className="text-small font-semibold">{site.name}</span>
+                                                                    <span className="text-tiny text-default-400">{site.url}</span>
                                                                 </div>
                                                             </div>
                                                         </AutocompleteItem>
