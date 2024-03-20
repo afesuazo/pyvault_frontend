@@ -6,7 +6,7 @@ import {
     PencilIcon,
 } from "@heroicons/react/16/solid";
 import {Fragment, useEffect, useState} from "react";
-import {CredentialDetailsProps, CredentialEntry, DetailPanelMode, Site, SiteFieldProps} from "@/interfaces";
+import {CredentialDetailsProps, CredentialEntry, DetailPanelMode} from "@/interfaces";
 import {
     Link,
     Input,
@@ -43,14 +43,17 @@ const CredentialDetails = ({availableSites, mode, credential, onSave, onCancel, 
     useEffect(() => {
         if (mode === DetailPanelMode.Create) {
             setFormData(emptyFormData);
+            setValue("");
         } else if (mode === DetailPanelMode.Edit && credential) {
             setFormData(credential);
+            setValue(credential.site?.id || "");
         }
     }, [mode, credential]);
 
     useEffect(() => {
         if (mode !== DetailPanelMode.Create && credential) {
             setFormData(credential);
+            setValue(credential.site?.id || "");
         }
     }, [mode, credential]);
 

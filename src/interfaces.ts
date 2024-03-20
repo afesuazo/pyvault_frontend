@@ -79,9 +79,3 @@ export interface HttpRequestConfig {
     headers?: any;
     body?: any;
 }
-
-export interface SiteFieldProps {
-    selectedKey: number | null;
-    inputValue: string;
-    items: Site[];
-}
