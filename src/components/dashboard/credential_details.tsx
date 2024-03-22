@@ -21,7 +21,7 @@ import {
 import {Textarea} from "@nextui-org/input";
 
 
-const CredentialDetails = ({availableSites, mode, credential, onSave, onCancel, onDelete}: CredentialDetailsProps) => {
+const CredentialDetails = ({availableSites, mode, credential, onSave, onCancel, onDelete, onEdit}: CredentialDetailsProps) => {
 
     const emptyFormData: CredentialEntry = {
         id: 0,
@@ -39,27 +39,43 @@ const CredentialDetails = ({availableSites, mode, credential, onSave, onCancel, 
 
     const [formData, setFormData] = useState<CredentialEntry>(emptyFormData);
     const [value, setValue] = useState(credential?.site?.id || "");
+    const [currentMode, setCurrentMode] = useState<DetailPanelMode>(mode);
 
     useEffect(() => {
-        if (mode === DetailPanelMode.Create) {
+        if (currentMode === DetailPanelMode.Create) {
             setFormData(emptyFormData);
             setValue("");
-        } else if (mode === DetailPanelMode.Edit && credential) {
+        } else if (currentMode === DetailPanelMode.Edit && credential) {
             setFormData(credential);
             setValue(credential.site?.id || "");
         }
-    }, [mode, credential]);
+    }, [currentMode, credential]);
 
     useEffect(() => {
-        if (mode !== DetailPanelMode.Create && credential) {
+        if (currentMode !== DetailPanelMode.Create && credential) {
             setFormData(credential);
             setValue(credential.site?.id || "");
         }
-    }, [mode, credential]);
+    }, [currentMode, credential]);
+
+    const onToggleEdit = () => {
+        if (currentMode === DetailPanelMode.View) {
+            setCurrentMode(DetailPanelMode.Edit);
+        }
+    }
 
     const handleSubmit = (event: any) => {
         event.preventDefault();
-        onSave(formData);
+        // If mode is edit, on update
+        if (currentMode === DetailPanelMode.Edit) {
+            onEdit(formData);
+        } else if (currentMode === DetailPanelMode.Create) {
+            // If mode is create, on save
+            onSave(formData);
+        }
+
+        // Reset mode to view
+        setCurrentMode(DetailPanelMode.View);
     }
 
     const onCanceled = () => {
@@ -95,7 +111,7 @@ const CredentialDetails = ({availableSites, mode, credential, onSave, onCancel, 
     }
 
     // Nothing to render when no credential is selected
-    if (!credential && mode !== DetailPanelMode.Create) {
+    if (!credential && currentMode !== DetailPanelMode.Create) {
         return null;
     }
 
@@ -112,32 +128,28 @@ const CredentialDetails = ({availableSites, mode, credential, onSave, onCancel, 
 
     return (
         <form onSubmit={handleSubmit}
-              className={`bg-neutral-100 justify-between  ${credential || mode === DetailPanelMode.Create ? "border-2" : ""}  drop-shadow-md border-primary-500 rounded-2xl flex flex-col h-full overflow-hidden whitespace-nowrap`}>
+              className={`bg-neutral-100 justify-between  ${credential || currentMode === DetailPanelMode.Create ? "border-2" : ""}  drop-shadow-md border-primary-500 rounded-2xl flex flex-col h-full overflow-hidden whitespace-nowrap`}>
 
             {/* Header */}
             <div className="flex justify-between items-center border-b p-4 my-2">
                 <div className="text-2xl font-semibold flex space-x-2 mr-6 items-center">
-                    <Button disabled={mode === 'view'} onClick={handleFavorite} isIconOnly size="sm" className={`bg-transparent hover:text-opacity-100 ${formData.favorite ? "hover:text-opacity-60 text-amber-400" : "text-opacity-60 text-gray-400"}`}>
+                    <Button disabled={currentMode === 'view'} onClick={handleFavorite} isIconOnly size="sm" className={`bg-transparent hover:text-opacity-100 ${formData.favorite ? "hover:text-opacity-60 text-amber-400" : "text-opacity-60 text-gray-400"}`}>
                         <StarIcon/>
                     </Button>
-                    {/*<span>*/}
-                    {/*    <StarIcon*/}
-                    {/*        className={`h-8 w-8 hover:text-opacity-100 ${credential?.favorite ? "hover:text-opacity-60 text-amber-400" : "text-opacity-60 text-gray-300"}`}/>*/}
-                    {/*</span>*/}
                     <Input
                         classNames={{base: "border-2 rounded-lg", input: "text-2xl"}}
                         name="nickname"
                         placeholder={"Nickname..."}
                         value={formData.nickname}
                         onChange={handleChange}
-                        readOnly={mode === 'view'}
+                        readOnly={currentMode === 'view'}
                     />
                 </div>
                 <div className="flex justify-center">
-                    {mode === DetailPanelMode.View ? (
+                    {currentMode === DetailPanelMode.View ? (
                         <Fragment>
                             <Tooltip content="Edit">
-                                <Button size={"sm"} isIconOnly className="text-primary-500 hover:text-gray-200 rounded">
+                                <Button size={"sm"} onPress={onToggleEdit} isIconOnly className="text-primary-500 hover:text-gray-200 rounded">
                                     <PencilIcon/>
                                 </Button>
                             </Tooltip>
@@ -181,7 +193,7 @@ const CredentialDetails = ({availableSites, mode, credential, onSave, onCancel, 
                         value={formData.username}
                         fullWidth={true}
                         onChange={handleChange}
-                        readOnly={mode === 'view'}
+                        readOnly={currentMode === 'view'}
                     />
 
                     <Input
@@ -192,7 +204,7 @@ const CredentialDetails = ({availableSites, mode, credential, onSave, onCancel, 
                         value={formData.email}
                         fullWidth={true}
                         onChange={handleChange}
-                        readOnly={mode === 'view'}
+                        readOnly={currentMode === 'view'}
                     />
 
                     <Input
@@ -206,10 +218,10 @@ const CredentialDetails = ({availableSites, mode, credential, onSave, onCancel, 
                         value={formData.encrypted_password}
                         fullWidth={true}
                         onChange={handleChange}
-                        readOnly={mode === 'view'}
+                        readOnly={currentMode === 'view'}
                     />
 
-                    {mode === DetailPanelMode.View &&
+                    {currentMode === DetailPanelMode.View &&
                         <Input
                             classNames={classNames}
                             label="Last Modified"
@@ -238,7 +250,7 @@ const CredentialDetails = ({availableSites, mode, credential, onSave, onCancel, 
                         placeholder="Additional comments..."
                         value={formData.notes}
                         onChange={handleChange}
-                        readOnly={mode === 'view'}
+                        readOnly={currentMode === 'view'}
                     />
 
                 </div>
@@ -253,7 +265,7 @@ const CredentialDetails = ({availableSites, mode, credential, onSave, onCancel, 
                     <CardBody>
                         <div className="flex lg:gap-6">
 
-                            { mode === DetailPanelMode.View ? (
+                            { currentMode === DetailPanelMode.View ? (
                                 <Avatar
                                     showFallback
                                     radius="lg"
@@ -278,7 +290,7 @@ const CredentialDetails = ({availableSites, mode, credential, onSave, onCancel, 
                             <div className="flex flex-col flex-grow justify-center">
 
                                 {/* Action Buttons + Name */}
-                                {mode === DetailPanelMode.View ? (
+                                {currentMode === DetailPanelMode.View ? (
                                         credential?.site ? (
                                             <Fragment>
                                                 <h2 className="text-xl font-bold">{credential.site.name}</h2>
