@@ -12,7 +12,7 @@ import {StarIcon} from "@heroicons/react/16/solid";
 import {CredentialEntry, CredentialTableProps} from "@/interfaces";
 import {Key} from "@react-types/shared";
 
-const CredentialTable = ({dataColumns, data, selectedCredential, onCredentialSelect}: CredentialTableProps) => {
+const CredentialTable = ({dataColumns, data, selectedCredential, onCredentialSelect, onFavoriteCredential}: CredentialTableProps) => {
 
     const [rowsPerPage, setRowsPerPage] = useState(15);
     const [page, setPage] = useState(1);
@@ -46,6 +46,11 @@ const CredentialTable = ({dataColumns, data, selectedCredential, onCredentialSel
         });
     }, [sortDescriptor, filteredItems]);
 
+    const toggleFavorite = useCallback((credential: CredentialEntry) => {
+        credential.favorite = !credential.favorite;
+        onFavoriteCredential(credential);
+    }, [onFavoriteCredential]);
+
     const renderCell = useCallback((credential: CredentialEntry, columnKey: any) => {
         const cellValue = credential[columnKey as keyof CredentialEntry];
 
@@ -76,7 +81,7 @@ const CredentialTable = ({dataColumns, data, selectedCredential, onCredentialSel
             case "favorite":
                 return (
                     <div className="hidden lg:block text-right">
-                        <Button isIconOnly size="sm" className="bg-transparent">
+                        <Button onClick={() => toggleFavorite(credential)} isIconOnly size="sm" className="bg-transparent">
                             <StarIcon
                                 className={`hover:text-opacity-100 ${credential.favorite ? "hover:text-opacity-60 text-amber-400" : "text-opacity-60 text-gray-400"}`}/>
                         </Button>
