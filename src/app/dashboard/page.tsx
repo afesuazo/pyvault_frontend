@@ -163,6 +163,10 @@ export default function Dashboard() {
                     }
                     return cred;
                 }));
+
+                if (selectedCredential && selectedCredential.id === updatedData.id) {
+                    setSelectedCredential(updatedData);
+                }
             };
 
             const requestBody = {
