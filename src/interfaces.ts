@@ -46,6 +46,7 @@ export interface CredentialTableProps {
     data: CredentialEntry[];
     selectedCredential: CredentialEntry | null;
     onCredentialSelect: (credential: CredentialEntry) => void;
+    onFavoriteCredential: (credential: CredentialEntry) => void;
 }
 
 
@@ -62,6 +63,7 @@ export interface CredentialDetailsProps {
     onSave: (credential: CredentialEntry) => void;
     onCancel: () => void;
     onDelete: (credential: CredentialEntry) => void;
+    onEdit: (credential: CredentialEntry) => void;
 }
 
 export interface NavbarProps {

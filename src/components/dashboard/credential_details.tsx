@@ -87,6 +87,13 @@ const CredentialDetails = ({availableSites, mode, credential, onSave, onCancel, 
         }));
     }
 
+    const handleFavorite = () => {
+        setFormData((prevData) => ({
+            ...prevData,
+            favorite: !prevData.favorite,
+        }));
+    }
+
     // Nothing to render when no credential is selected
     if (!credential && mode !== DetailPanelMode.Create) {
         return null;
@@ -109,13 +116,16 @@ const CredentialDetails = ({availableSites, mode, credential, onSave, onCancel, 
 
             {/* Header */}
             <div className="flex justify-between items-center border-b p-4 my-2">
-                <div className="text-2xl font-semibold flex space-x-2 mr-6">
-                    <span>
-                        <StarIcon
-                            className={`h-8 w-8 hover:text-opacity-100 ${credential?.favorite ? "hover:text-opacity-60 text-amber-400" : "text-opacity-60 text-gray-300"}`}/>
-                    </span>
+                <div className="text-2xl font-semibold flex space-x-2 mr-6 items-center">
+                    <Button disabled={mode === 'view'} onClick={handleFavorite} isIconOnly size="sm" className={`bg-transparent hover:text-opacity-100 ${formData.favorite ? "hover:text-opacity-60 text-amber-400" : "text-opacity-60 text-gray-400"}`}>
+                        <StarIcon/>
+                    </Button>
+                    {/*<span>*/}
+                    {/*    <StarIcon*/}
+                    {/*        className={`h-8 w-8 hover:text-opacity-100 ${credential?.favorite ? "hover:text-opacity-60 text-amber-400" : "text-opacity-60 text-gray-300"}`}/>*/}
+                    {/*</span>*/}
                     <Input
-                        classNames={{input: "text-2xl"}}
+                        classNames={{base: "border-2 rounded-lg", input: "text-2xl"}}
                         name="nickname"
                         placeholder={"Nickname..."}
                         value={formData.nickname}

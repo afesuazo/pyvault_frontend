@@ -153,6 +153,50 @@ export default function Dashboard() {
         }
     }
 
+    const onUpdateCredential = async (data: CredentialEntry) => {
+        const updateCredential = async () => {
+            const applyData = (updatedData: any) => {
+                // Update the credential in the list of credentials with the new data
+                setCredentials(prevState => prevState.map(cred => {
+                    if (cred.id === updatedData.id) {
+                        return updatedData;
+                    }
+                    return cred;
+                }));
+            };
+
+            const requestBody = {
+                nickname: data.nickname,
+                email: data.email,
+                username: data.username,
+                encrypted_password: data.encrypted_password,
+                favorite: data.favorite,
+            };
+
+            await httpRequest({
+                url: `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/credentials/${data.id}`,
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${session?.accessToken}`,
+                },
+                body: requestBody
+            }, applyData);
+
+            if (error) {
+                console.error("Error log: ", error);
+            }
+
+        };
+
+        try {
+            await updateCredential();
+        }
+        catch (error) {
+            console.error("Error saving credential", error);
+        }
+    }
+
     const toggleCreateCredentialModal = () => {
         setSelectedCredential(null);
         // If modal is closed, open it and set mode to create using the previous state
@@ -207,6 +251,7 @@ export default function Dashboard() {
                         data={credentials}
                         selectedCredential={selectedCredential}
                         onCredentialSelect={onSelectedCredential}
+                        onFavoriteCredential={onUpdateCredential}
                     />
                 </div>
                 <div className={`relative right-0 0 transition-width duration-[500ms] ease-in-out border-primary-500 w-0 ${selectedCredential || createCredentialModalOpen ? "w-1/4" : "border-8 rounded-r-2xl"}`}>
@@ -218,6 +263,7 @@ export default function Dashboard() {
                         onCancel={() => setCreateCredentialModalOpen(false)}
                         onSave={onCredentialSave}
                         onDelete={onCredentialDelete}
+                        onEdit={onUpdateCredential}
                     />
                 </div>
             </div>
