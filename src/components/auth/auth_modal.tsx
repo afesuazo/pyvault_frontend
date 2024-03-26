@@ -2,8 +2,8 @@
 
 import {Modal, ModalBody, ModalHeader, ModalContent, ModalFooter} from "@nextui-org/modal";
 import {Button, Divider, Input} from "@nextui-org/react";
-import {MailIcon, LockFilledIcon} from "@nextui-org/shared-icons";
-import {signIn, signOut} from "next-auth/react";
+import {UserIcon, LockClosedIcon} from "@heroicons/react/24/outline";
+import {signIn} from "next-auth/react";
 import {useState} from "react";
 import {AuthModalProps} from "@/interfaces";
 
@@ -51,12 +51,12 @@ export const AuthModal = ({isOpen, onClose}: AuthModalProps) => {
         >
             <form onSubmit={loginHandler}>
                 <ModalContent>
-                    <ModalHeader className="my-6 flex flex-col text-center text-3xl gap-1">Log in</ModalHeader>
+                    <ModalHeader className="my-5 flex flex-col text-center text-3xl gap-1">Log in</ModalHeader>
                     <ModalBody>
                         <Input
                             autoFocus
                             startContent={
-                                <MailIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0"/>
+                                <UserIcon className="w-6 h-6 text-default-400 pointer-events-none flex-shrink-0"/>
                             }
                             placeholder="Enter your username"
                             variant="underlined"
@@ -64,7 +64,7 @@ export const AuthModal = ({isOpen, onClose}: AuthModalProps) => {
                         />
                         <Input
                             startContent={
-                                <LockFilledIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0"/>
+                                <LockClosedIcon className="w-6 h-6 text-default-400 pointer-events-none flex-shrink-0"/>
                             }
                             placeholder="Enter your password"
                             type="password"
@@ -78,7 +78,7 @@ export const AuthModal = ({isOpen, onClose}: AuthModalProps) => {
                         </Button>
                         <Divider/>
                     </ModalBody>
-                    <ModalFooter className={`flex text-center justify-center`}>
+                    <ModalFooter className={`flex text-center justify-center mb-5`}>
                         <p>
                             Don't have an account?{" "}
                         </p>
