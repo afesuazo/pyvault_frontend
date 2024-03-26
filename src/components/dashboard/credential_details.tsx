@@ -95,12 +95,21 @@ const CredentialDetails = ({availableSites, mode, credential, onSave, onCancel, 
     };
 
     const handleSiteChange = (value: any) => {
+        console.log("Site changed: ", value)
         setValue(value);
-        let site = availableSites.find((site) => site.id == value);
-        setFormData((prevData) => ({
-            ...prevData,
-            site: site || null,
-        }));
+
+        if (value === 'none') {
+            setFormData(prevData => ({
+                ...prevData,
+                site: null,
+            }));
+        } else {
+            let site = availableSites.find(site => site.id == value);
+            setFormData(prevData => ({
+                ...prevData,
+                site: site || null,
+            }));
+        }
     }
 
     const handleFavorite = () => {
@@ -125,6 +134,8 @@ const CredentialDetails = ({availableSites, mode, credential, onSave, onCancel, 
         ],
         inputWrapper: "bg-neutral-200 my-1 group-data-[focus=true]:bg-neutral-200 data-[hover=true]:bg-neutral-200",
     }
+
+    const updatedAvailableSites = [{ id: 'none', name: 'None', url: '', icon: '' }, ...availableSites];
 
     return (
         <form onSubmit={handleSubmit}
@@ -317,7 +328,7 @@ const CredentialDetails = ({availableSites, mode, credential, onSave, onCancel, 
                                             <div className="flex justify-between [&_input]:!font-bold [&_input]:!text-lg">
                                                 <Autocomplete
                                                     fullWidth={true}
-                                                    items={availableSites}
+                                                    items={updatedAvailableSites}
                                                     selectedKey={value}
                                                     placeholder="Select a site"
                                                     labelPlacement="inside"
