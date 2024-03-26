@@ -217,7 +217,7 @@ export default function Dashboard() {
     };
 
     // If the user is not logged in, show the login modal
-    if (!session || !session.user) {
+    if (!session || !session.user || !session.accessToken) {
         return (
             <div className="flex flex-col h-full w-full gap-y-2">
                 <AuthModal isOpen={true} onClose={() => {}}/>

@@ -4,23 +4,58 @@ import Credentials from "@auth/core/providers/credentials"
 
 import type { NextAuthConfig } from "next-auth"
 
+async function refreshAccessToken(token: any) {
+    try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/auth/refresh`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+                'X-Refresh-Token': token.refreshToken,
+            }
+        })
+
+        const refreshedTokens = await response.json();
+
+        if (!response.ok) {
+            throw refreshedTokens;
+        }
+
+        return {
+            ...token,
+            accessToken: refreshedTokens.access_token,
+            accessTokenExpires: Date.now() + refreshedTokens.expires_in * 1000,
+            refreshToken: refreshedTokens.refresh_token ? refreshedTokens.refresh_token : token.refreshToken,
+        }
+    }
+    catch (error) {
+        console.error("Error refreshing token", error);
+        return null;
+    }
+}
+
 export const config = {
     callbacks: {
         // TODO: Add types for both callbacks
-        jwt({ token, trigger, user } : any) {
+        jwt: async ({ token, account, user } : any) => {
             // User is the data from the backend on initial sign in
             // console.log("JWT Callback: ", token, trigger, user)
             if (user) {
                 token.accessToken = user.access_token;
+                token.accessTokenExpires = Date.now() + (user.expiration_time || 3600) * 1000;
+                token.refreshToken = user.refresh_token;
                 token.username = user.username;
             }
-            return token;
+
+            if (Date.now() < token.accessTokenExpires) {
+                return token;
+            }
+
+            console.log("Token expired, refreshing token")
+            return await refreshAccessToken(token);
         },
         session: async ({ session, token } : any ) => {
-            // console.log("Session Callback: ", session, token)
             session.accessToken = token.accessToken;
             session.user.name = token.username;
-            // console.log("Session Post Callback: ", session)
             return session;
         },
     },
