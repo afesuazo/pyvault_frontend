@@ -175,6 +175,7 @@ export default function Dashboard() {
                 username: data.username,
                 encrypted_password: data.encrypted_password,
                 favorite: data.favorite,
+                site_id: data.site?.id || null,
             };
 
             await httpRequest({
