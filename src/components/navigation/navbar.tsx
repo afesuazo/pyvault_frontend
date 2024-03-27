@@ -13,12 +13,10 @@ import {
     Button
 } from "@nextui-org/react";
 import {PlusIcon, LockClosedIcon} from "@heroicons/react/24/outline";
-import {useSession, signOut} from "next-auth/react";
+import {signOut} from "next-auth/react";
 import {NavbarProps} from "@/interfaces";
 
-export default function TopNavbar( {onCreateNewCredential}: NavbarProps ) {
-
-    const {data: session} = useSession();
+export default function TopNavbar( {onCreateNewCredential, session}: NavbarProps ) {
 
     if (!session || !session.user) {
         return;

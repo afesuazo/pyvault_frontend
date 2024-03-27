@@ -16,6 +16,8 @@ async function refreshAccessToken(token: any) {
 
         const refreshedTokens = await response.json();
 
+        console.log("Refreshed tokens: ", refreshedTokens)
+
         if (!response.ok) {
             throw refreshedTokens;
         }
@@ -23,8 +25,9 @@ async function refreshAccessToken(token: any) {
         return {
             ...token,
             accessToken: refreshedTokens.access_token,
-            accessTokenExpires: Date.now() + refreshedTokens.expires_in * 1000,
-            refreshToken: refreshedTokens.refresh_token ? refreshedTokens.refresh_token : token.refreshToken,
+            accessTokenExpires: Date.now() + refreshedTokens.expiration_time * 1000,
+            refreshToken: refreshedTokens.refresh_token,
+            needRefresh: false,
         }
     }
     catch (error) {
@@ -34,28 +37,39 @@ async function refreshAccessToken(token: any) {
 }
 
 export const config = {
+    // @ts-ignore
+    strategy: "jwt",
     callbacks: {
-        // TODO: Add types for both callbacks
-        jwt: async ({ token, account, user } : any) => {
+        jwt: ({ token, user, trigger } : any) => {
             // User is the data from the backend on initial sign in
-            // console.log("JWT Callback: ", token, trigger, user)
             if (user) {
                 token.accessToken = user.access_token;
                 token.accessTokenExpires = Date.now() + (user.expiration_time || 3600) * 1000;
                 token.refreshToken = user.refresh_token;
                 token.username = user.username;
+                token.needRefresh = false;
             }
 
-            if (Date.now() < token.accessTokenExpires) {
-                return token;
+            if (Date.now() > token.accessTokenExpires - 30000) {
+                token.needRefresh = true;
             }
 
-            console.log("Token expired, refreshing token")
-            return await refreshAccessToken(token);
+            if (Date.now() >= token.accessTokenExpires) {
+                token.needRefresh = true;
+                token.accessToken = null;
+            }
+
+            if (trigger === "update") {
+                console.log("Token expired, refreshing token")
+                return refreshAccessToken(token);
+            }
+
+            return token;
         },
         session: async ({ session, token } : any ) => {
             session.accessToken = token.accessToken;
             session.user.name = token.username;
+            session.needRefresh = token.needRefresh;
             return session;
         },
     },
