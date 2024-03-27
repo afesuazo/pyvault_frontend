@@ -41,18 +41,13 @@ const CredentialDetails = ({availableSites, mode, credential, onSave, onCancel, 
     const [value, setValue] = useState(credential?.site?.id || "");
     const [currentMode, setCurrentMode] = useState<DetailPanelMode>(mode);
 
+    useEffect(() => { setCurrentMode(mode) }, [mode]);
+
     useEffect(() => {
         if (currentMode === DetailPanelMode.Create) {
             setFormData(emptyFormData);
             setValue("");
-        } else if (currentMode === DetailPanelMode.Edit && credential) {
-            setFormData(credential);
-            setValue(credential.site?.id || "");
-        }
-    }, [currentMode, credential]);
-
-    useEffect(() => {
-        if (currentMode !== DetailPanelMode.Create && credential) {
+        } else if (credential) {
             setFormData(credential);
             setValue(credential.site?.id || "");
         }
@@ -95,7 +90,6 @@ const CredentialDetails = ({availableSites, mode, credential, onSave, onCancel, 
     };
 
     const handleSiteChange = (value: any) => {
-        console.log("Site changed: ", value)
         setValue(value);
 
         if (value === 'none') {
