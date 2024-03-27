@@ -1,3 +1,9 @@
+import {Session} from "next-auth";
+
+export interface DashboardProps {
+    session: Session | null;
+}
+
 export interface MainContentProps {
     isLockHovered: boolean;
     setIsLockHovered: React.Dispatch<React.SetStateAction<boolean>>;
@@ -68,11 +74,11 @@ export interface CredentialDetailsProps {
 
 export interface NavbarProps {
     onCreateNewCredential: () => void;
+    session: Session | null;
 }
 
 export interface AuthModalProps {
     isOpen: boolean;
-    onClose: () => void;
 }
 
 export interface HttpRequestConfig {

@@ -7,7 +7,7 @@ import {signIn} from "next-auth/react";
 import {useState} from "react";
 import {AuthModalProps} from "@/interfaces";
 
-export const AuthModal = ({isOpen, onClose}: AuthModalProps) => {
+export const AuthModal = ({isOpen}: AuthModalProps) => {
 
     const [enteredUsername, setEnteredUsername] = useState('')
     const [enteredPassword, setEnteredPassword] = useState('')
@@ -32,16 +32,11 @@ export const AuthModal = ({isOpen, onClose}: AuthModalProps) => {
         if (result.error) {
             setErrorMessage(result.error)
         }
-
-        if (result.ok) {
-            onClose()
-        }
     }
 
     return (
         <Modal
             isOpen={isOpen}
-            onClose={onClose}
             placement="top-center"
             isDismissable={false}
             hideCloseButton={true}
